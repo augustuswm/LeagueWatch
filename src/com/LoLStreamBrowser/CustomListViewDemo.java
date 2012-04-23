@@ -43,6 +43,7 @@ public class CustomListViewDemo extends ListActivity {
 	
 	private StreamerAdapter adap;
 	private static ArrayList<StreamerInfo> database = new ArrayList<StreamerInfo>();
+	ScheduledExecutorService scheduler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,18 +55,33 @@ public class CustomListViewDemo extends ListActivity {
         
 		adap = new StreamerAdapter(this, database);
 		setListAdapter(adap);
-		
-		ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+	}
+	
+	@Override
+	public void onResume() {
+        super.onResume();
+        
+        scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() { 
         	public void run() {
         		Log.d("Stream", "Start Update");
         		database = Twitch.pullDown();
         		Collections.sort(database);
-        		adap.update(database);
+        		runOnUiThread(new Runnable() {
+        		     public void run() {
+        	        	adap.update(database);
+        				adap.notifyDataSetChanged();
+        		    }
+        		});
         		Log.d("Stream", "End Update");
         	} 
-        }, 60, 60, TimeUnit.SECONDS);
-        
+        }, 0, 180, TimeUnit.SECONDS);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		scheduler.shutdownNow();
 	}
 	
 }
