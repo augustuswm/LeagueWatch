@@ -13,14 +13,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-public class Twitch {
+import android.util.Log;
+
+public class Own3d {
 
 	public static ArrayList<StreamerInfo> pullDown() {
 		
 		ArrayList<StreamerInfo> database = new ArrayList<StreamerInfo>(); 
 
 		DefaultHttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://api.justin.tv/api/stream/list.xml?category=gaming&meta_game=League%20of%20Legends");
+        HttpGet httpget = new HttpGet("http://api.own3d.tv/live.php?game=LoL");
         HttpResponse response = null;
 		try {
 			response = httpclient.execute(httpget);
@@ -73,34 +75,40 @@ public class Twitch {
 		}
 		
 		StreamerInfo s = null;
-		String openTag = null;
 		String curText = "";
 		
 		while (eventType != XmlPullParser.END_DOCUMENT) {
-			if (eventType == XmlPullParser.START_TAG && xpp.getName().compareTo("stream") == 0) {
-				if (s != null && s.viewers > 10)
-					database.add(s);
-				s = new StreamerInfo();
-				s.service = "Twitch";
-				s.favorite = false;
-				s.featured = false;
-			}
-			
+			//Log.d("Stream", Integer.toString(eventType));
+			//if (eventType == XmlPullParser.START_TAG)
+			//Log.d("Stream", Integer.toString(eventType) + " " + XmlPullParser.END_TAG + " " + xpp.getName() + " " + curText);
 			if (eventType == XmlPullParser.START_TAG) {
-				openTag = xpp.getName();
 				curText = "";
+				
+				if (xpp.getName().compareTo("item") == 0) {
+					if (s != null && s.viewers > 10)
+						database.add(s);
+					s = new StreamerInfo();
+					s.service = "Own3d";
+					s.favorite = false;
+					s.featured = false;
+				}
+				
+				if (xpp.getName().compareTo("misc") == 0) {
+					s.viewers = Integer.valueOf(xpp.getAttributeValue(2));
+				}
 			}
-			
+						
 			if (eventType == XmlPullParser.TEXT) {
 				curText += xpp.getText();
 			}
 
 			if (eventType == XmlPullParser.END_TAG) {
 				String tagName = xpp.getName();
-				if (tagName.compareTo("title") == 0)
-					s.name = curText;
-				else if (tagName.compareTo("channel_count") == 0)
-					s.viewers = Integer.valueOf(curText.trim());
+				if (tagName.compareTo("title") == 0) {
+					try {
+						s.name = curText;
+					} catch (Exception e) {}
+				}
 			}
 			
 			try {

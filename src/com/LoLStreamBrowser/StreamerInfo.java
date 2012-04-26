@@ -1,6 +1,10 @@
 package com.LoLStreamBrowser;
 
-public class StreamerInfo implements Comparable {
+import java.io.Serializable;
+
+public class StreamerInfo implements Comparable<Object>, Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	String name;
 	int viewers;
 	String service;

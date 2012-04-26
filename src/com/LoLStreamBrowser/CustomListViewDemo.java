@@ -1,8 +1,15 @@
 package com.LoLStreamBrowser;
  	  
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,10 +56,17 @@ public class CustomListViewDemo extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.main);
 
-		database = Twitch.pullDown();
+		try {
+			File dir = new File(getExternalFilesDir(null), "streamers.db");
+			ObjectInputStream i = new ObjectInputStream(new FileInputStream(dir));
+			database = (ArrayList<StreamerInfo>)i.readObject();
+		} catch (Exception e) {
+			//e.printStackTrace();
+		}
+
 		Collections.sort(database);
-        
 		adap = new StreamerAdapter(this, database);
 		setListAdapter(adap);
 	}
@@ -64,16 +78,30 @@ public class CustomListViewDemo extends ListActivity {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() { 
         	public void run() {
-        		Log.d("Stream", "Start Update");
-        		database = Twitch.pullDown();
+        		//Log.d("Stream", "Start Update");
+        		database = Own3d.pullDown();
+        		ArrayList<StreamerInfo> twitchDB = Twitch.pullDown();
+        		database.addAll(twitchDB);
         		Collections.sort(database);
+        		try {
+        			File dir = new File(getExternalFilesDir(null), "streamers.db");
+					ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(dir));
+					o.writeObject(database);
+					o.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		runOnUiThread(new Runnable() {
         		     public void run() {
         	        	adap.update(database);
         				adap.notifyDataSetChanged();
         		    }
         		});
-        		Log.d("Stream", "End Update");
+        		//Log.d("Stream", "End Update");
         	} 
         }, 0, 180, TimeUnit.SECONDS);
 	}

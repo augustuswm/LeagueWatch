@@ -32,6 +32,7 @@
          reference to one of our string resources.-->
     <uses-sdk android:minSdkVersion="10"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application android:label="@string/app_name">
 
         <!-- An Activity in the application - this is something the user
