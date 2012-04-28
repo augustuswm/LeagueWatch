@@ -80,7 +80,6 @@ public class CustomListViewDemo extends ListActivity {
         		//Log.d("Stream", "Start Update");
         		ArrayList<StreamerInfo> own3d = Own3d.pullDown();
         		ArrayList<StreamerInfo> twitch = Twitch.pullDown();
-        		Log.d("Stream", "" + twitch.size());
         		own3d.addAll(twitch);
         		
         		database = own3d;

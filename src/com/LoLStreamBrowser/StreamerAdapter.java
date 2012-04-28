@@ -55,12 +55,13 @@ public class StreamerAdapter extends BaseAdapter {
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             StreamerInfo element = (StreamerInfo) viewHolder.favorite.getTag();
                             element.favorite = buttonView.isChecked();
-                            Log.d("Stream", "" + element.name);
                             
-                            /*if (buttonView.isChecked())
-                            	Settings.addFavorite(new Long(element.id));
-                            else
-                            	Settings.removeFavorite(new Long(element.id));*/
+                            if (element.id != null) {
+	                            if (buttonView.isChecked())
+	                            	Settings.addFavorite(new Long(element.id));
+	                            else
+	                            	Settings.removeFavorite(new Long(element.id));
+                            }
 
                         }
                     });

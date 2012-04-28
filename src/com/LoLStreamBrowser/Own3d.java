@@ -85,8 +85,11 @@ public class Own3d {
 				curText = "";
 				
 				if (xpp.getName().compareTo("item") == 0) {
-					if (s != null && s.viewers > 10)
+					if (s != null && s.viewers > 10) {
+						if (Settings.isFavorite(new Long(s.id)))
+							s.favorite = true;
 						database.add(s);
+					}
 					s = new StreamerInfo();
 					s.service = "Own3d";
 					s.favorite = false;
@@ -108,6 +111,9 @@ public class Own3d {
 					try {
 						s.name = curText;
 					} catch (Exception e) {}
+				} else if (tagName.compareTo("guid") == 0) {
+					String[] idFind = curText.split("/");
+					s.id = Long.valueOf(idFind[idFind.length - 1]);
 				}
 			}
 			
