@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +52,15 @@ public class StreamerAdapter extends BaseAdapter {
                     .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                         @Override
-                        public void onCheckedChanged(CompoundButton buttonView,
-                                boolean isChecked) {
-                            StreamerInfo element = (StreamerInfo) viewHolder.favorite
-                                    .getTag();
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            StreamerInfo element = (StreamerInfo) viewHolder.favorite.getTag();
                             element.favorite = buttonView.isChecked();
+                            Log.d("Stream", "" + element.name);
+                            
+                            /*if (buttonView.isChecked())
+                            	Settings.addFavorite(new Long(element.id));
+                            else
+                            	Settings.removeFavorite(new Long(element.id));*/
 
                         }
                     });
@@ -71,6 +76,7 @@ public class StreamerAdapter extends BaseAdapter {
         }
         
         Streamer holder = (Streamer) view.getTag();
+        holder.id = database.get(position).id;
         holder.name.setText(database.get(position).name);
         holder.viewers.setText(database.get(position).viewers + " - " + database.get(position).service + ".tv");
         holder.name.setText(database.get(position).name);
@@ -80,7 +86,7 @@ public class StreamerAdapter extends BaseAdapter {
 	}
 	
 	static class Streamer {
-		protected int id;
+		protected Long id;
 		protected TextView name;
 		protected TextView viewers;
 		protected CheckBox favorite;

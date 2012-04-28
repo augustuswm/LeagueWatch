@@ -6,6 +6,7 @@ public class StreamerInfo implements Comparable<Object>, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	String name;
+	Long id;
 	int viewers;
 	String service;
 	boolean favorite;

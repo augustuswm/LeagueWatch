@@ -43,9 +43,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// Twitch key: 742fkrw94uwv3rc34f9q5lcvx
-
-
 public class CustomListViewDemo extends ListActivity {
 	
 	private StreamerAdapter adap;
@@ -58,6 +55,8 @@ public class CustomListViewDemo extends ListActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
 
+        Settings.initialize(this);
+        
 		try {
 			File dir = new File(getExternalFilesDir(null), "streamers.db");
 			ObjectInputStream i = new ObjectInputStream(new FileInputStream(dir));
@@ -79,22 +78,17 @@ public class CustomListViewDemo extends ListActivity {
         scheduler.scheduleAtFixedRate(new Runnable() { 
         	public void run() {
         		//Log.d("Stream", "Start Update");
-        		database = Own3d.pullDown();
-        		ArrayList<StreamerInfo> twitchDB = Twitch.pullDown();
-        		database.addAll(twitchDB);
+        		ArrayList<StreamerInfo> own3d = Own3d.pullDown();
+        		ArrayList<StreamerInfo> twitch = Twitch.pullDown();
+        		Log.d("Stream", "" + twitch.size());
+        		own3d.addAll(twitch);
+        		
+        		database = own3d;
+        		
         		Collections.sort(database);
-        		try {
-        			File dir = new File(getExternalFilesDir(null), "streamers.db");
-					ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(dir));
-					o.writeObject(database);
-					o.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        		
+        		//Settings.save();
+        		
         		runOnUiThread(new Runnable() {
         		     public void run() {
         	        	adap.update(database);
@@ -109,6 +103,17 @@ public class CustomListViewDemo extends ListActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
+		try {
+			File dir = new File(getExternalFilesDir(null), "streamers.db");
+			ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(dir));
+			o.writeObject(database);
+			o.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Settings.save();
 		scheduler.shutdownNow();
 	}
 	

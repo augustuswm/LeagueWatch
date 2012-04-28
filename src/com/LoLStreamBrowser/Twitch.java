@@ -13,6 +13,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.util.Log;
+
 public class Twitch {
 
 	public static ArrayList<StreamerInfo> pullDown() {
@@ -78,8 +80,11 @@ public class Twitch {
 		
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG && xpp.getName().compareTo("stream") == 0) {
-				if (s != null && s.viewers > 10)
+				if (s != null && s.viewers > 10) {
+					if (Settings.isFavorite(new Long(s.id)))
+						s.favorite = true;
 					database.add(s);
+				}
 				s = new StreamerInfo();
 				s.service = "Twitch";
 				s.favorite = false;
@@ -101,6 +106,8 @@ public class Twitch {
 					s.name = curText;
 				else if (tagName.compareTo("channel_count") == 0)
 					s.viewers = Integer.valueOf(curText.trim());
+				else if (tagName.compareTo("id") == 0)
+					s.id = Long.valueOf(curText.trim());
 			}
 			
 			try {
