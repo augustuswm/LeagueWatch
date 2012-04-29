@@ -62,7 +62,7 @@ public class CustomListViewDemo extends ListActivity {
 			ObjectInputStream i = new ObjectInputStream(new FileInputStream(dir));
 			database = (ArrayList<StreamerInfo>)i.readObject();
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		Collections.sort(database);
@@ -108,11 +108,10 @@ public class CustomListViewDemo extends ListActivity {
 			o.writeObject(database);
 			o.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		//Settings.save();
+		Settings.save();
 		scheduler.shutdownNow();
 	}
 	
