@@ -26,7 +26,11 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -48,7 +52,7 @@ public class CustomListViewDemo extends ListActivity {
 	private StreamerAdapter adap;
 	private static ArrayList<StreamerInfo> database = new ArrayList<StreamerInfo>();
 	ScheduledExecutorService scheduler;
-	
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,7 +68,7 @@ public class CustomListViewDemo extends ListActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		Collections.sort(database);
 		adap = new StreamerAdapter(this, database);
 		setListAdapter(adap);
@@ -81,6 +85,8 @@ public class CustomListViewDemo extends ListActivity {
         		ArrayList<StreamerInfo> own3d = Own3d.pullDown();
         		ArrayList<StreamerInfo> twitch = Twitch.pullDown();
         		own3d.addAll(twitch);
+        		
+        		ArrayList<StreamerInfo> diff = Utilities.streamerListDifference(own3d, database);
         		
         		database = own3d;
         		

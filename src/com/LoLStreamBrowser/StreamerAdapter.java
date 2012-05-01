@@ -2,7 +2,11 @@ package com.LoLStreamBrowser;
 
 import java.util.ArrayList;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -13,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 
@@ -53,8 +58,11 @@ public class StreamerAdapter extends BaseAdapter {
 
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        	
                             StreamerInfo element = (StreamerInfo) viewHolder.favorite.getTag();
                             element.favorite = buttonView.isChecked();
+                            
+                            StreamerNotification.sendNote(context, element.name, Integer.toString(element.viewers));
                             
                             if (element.id != null) {
 	                            if (buttonView.isChecked())
