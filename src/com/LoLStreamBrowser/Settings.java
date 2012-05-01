@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.content.Context;
 
@@ -30,6 +31,21 @@ public class Settings {
 	
 	public static boolean isFavorite(Long streamer) {
 		return favorites.contains(streamer);
+	}
+	
+	public static boolean isFavorite(StreamerInfo streamer) {
+		return favorites.contains(streamer.id);
+	}
+	
+	public static ArrayList<StreamerInfo> areFavorites(ArrayList<StreamerInfo> a) {
+		Iterator<StreamerInfo> i = a.iterator();
+		while (i.hasNext()) {
+			StreamerInfo b = i.next();
+			if (!isFavorite(b)) {
+				a.remove(b);
+			}
+		}
+		return a;
 	}
 	
 	public static void addFavorite(Long streamer) {

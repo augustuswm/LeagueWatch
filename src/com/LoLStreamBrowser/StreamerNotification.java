@@ -9,12 +9,12 @@ import android.content.Intent;
 public class StreamerNotification {
 	private static final int HELLO_ID = 1;
 	
-	public static void sendNote(Context context, String title, String text) {
+	public static void sendNote(Context context, String status, String title, String text) {
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(ns);
 		
 		int icon = R.drawable.twitch_t;
-		CharSequence tickerText = title + " is now online";
+		CharSequence tickerText = status;
 		long when = System.currentTimeMillis();
 	
 		Notification notification = new Notification(icon, tickerText, when);

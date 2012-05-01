@@ -87,6 +87,17 @@ public class CustomListViewDemo extends ListActivity {
         		own3d.addAll(twitch);
         		
         		ArrayList<StreamerInfo> diff = Utilities.streamerListDifference(own3d, database);
+        		diff = Settings.areFavorites(diff);
+        		
+        		String status = "Streamers are now Online!", title = "League Watch", note = "";
+        		
+        		for (int i = 0; i < diff.size(); i++) {
+        			note += diff.get(i).name + ", ";
+        		}
+        		
+        		note += " are now streaming";
+        		
+        		StreamerNotification.sendNote(getBaseContext(), status, title, note);
         		
         		database = own3d;
         		

@@ -62,8 +62,6 @@ public class StreamerAdapter extends BaseAdapter {
                             StreamerInfo element = (StreamerInfo) viewHolder.favorite.getTag();
                             element.favorite = buttonView.isChecked();
                             
-                            StreamerNotification.sendNote(context, element.name, Integer.toString(element.viewers));
-                            
                             if (element.id != null) {
 	                            if (buttonView.isChecked())
 	                            	Settings.addFavorite(new Long(element.id));
