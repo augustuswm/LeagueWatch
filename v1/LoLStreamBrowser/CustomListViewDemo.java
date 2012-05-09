@@ -25,6 +25,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -45,7 +47,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CustomListViewDemo extends ListActivity {
 	
@@ -86,7 +87,7 @@ public class CustomListViewDemo extends ListActivity {
         		ArrayList<StreamerInfo> twitch = Twitch.pullDown();
         		own3d.addAll(twitch);
         		
-        		ArrayList<StreamerInfo> diff = Utilities.streamerListDifference(own3d, database);
+        		//ArrayList<StreamerInfo> diff = Utilities.streamerListDifference(own3d, database);
         		
         		database = own3d;
         		
