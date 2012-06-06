@@ -16,9 +16,8 @@ import android.widget.TextView;
 
 public class StreamerAdapter extends BaseAdapter {
 
-	private Context context;
 	LayoutInflater mInflater;
-	private ArrayList<Streamer> database;
+	public ArrayList<Streamer> database;
 	
 	private class ViewHolder {
 		protected Long id;
@@ -27,12 +26,10 @@ public class StreamerAdapter extends BaseAdapter {
 		protected CheckBox favorite;
 		protected ImageView featured;
 	}
-	
-	public StreamerAdapter(Context context, ArrayList<Streamer> database) {
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		this.database = database;
-		this.context = context;
+	public StreamerAdapter(Context context) {
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.database = new ArrayList<Streamer>();
 	}
 
 	@Override

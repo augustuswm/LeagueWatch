@@ -1,40 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="fill_parent" android:layout_width="fill_parent">
-
-	<ListView
-	    android:id="@+id/android:list"
-	    android:layout_width="match_parent"
-	    android:layout_height="50dip"
-	    android:layout_alignParentBottom="true"
-	    android:layout_below="@+id/linearLayout1"
-	    android:cacheColorHint="#00000000"
-	    android:drawSelectorOnTop="true" />
-
-	<LinearLayout
-	    android:id="@+id/linearLayout1"
-	    android:layout_width="200dip"
-	    android:layout_height="48dip"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentTop="true"
-	    android:orientation="vertical" >
-
-		<TextView
-		    android:id="@+id/textView1"
-		    android:layout_width="wrap_content"
-		    android:layout_height="match_parent"
-		    android:text="Streams"
-		    android:textAppearance="?android:attr/textAppearanceMedium" android:layout_marginLeft="48dip" android:gravity="center_vertical"/>
-
-	</LinearLayout>
-
-	<ImageView
-	    android:id="@+id/imageView1"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_above="@+id/android:list"
-	    android:layout_alignParentRight="true"
-	    android:src="@drawable/settings" android:layout_marginBottom="8dip"/>
+	<FrameLayout
+		android:id="@+id/streamer_list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />
 
 </RelativeLayout>
