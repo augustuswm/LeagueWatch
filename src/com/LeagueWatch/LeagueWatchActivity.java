@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -32,7 +36,19 @@ public class LeagueWatchActivity extends SherlockFragmentActivity {
 
         mPager = (ViewPager)findViewById(R.id.viewpager);
         mPager.setAdapter(mAdapter);
+        
+        register();
 		//initialsie the pager
+	}
+	
+	public void register() {
+		Log.w("C2DM", "start registration process");
+		Intent intent = new Intent("com.google.android.c2dm.intent.REGISTER");
+		intent.putExtra("app",
+				PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		// Sender currently not used
+		intent.putExtra("sender", "gusmayo@gmail.com");
+		startService(intent);
 	}
 	
 	protected void onResume() {
