@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class LeagueWatchActivity extends SherlockFragmentActivity {
 		
@@ -36,6 +37,11 @@ public class LeagueWatchActivity extends SherlockFragmentActivity {
 
         mPager = (ViewPager)findViewById(R.id.viewpager);
         mPager.setAdapter(mAdapter);
+        mPager.setCurrentItem(1);
+        
+        //Bind the title indicator to the adapter
+        TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.titles);
+        titleIndicator.setViewPager(mPager);
         
         register();
 		//initialsie the pager

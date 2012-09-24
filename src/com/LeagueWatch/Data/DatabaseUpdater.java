@@ -1,6 +1,10 @@
-package com.LeagueWatch;
+package com.LeagueWatch.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
+import com.LeagueWatch.Streamer;
+import com.LeagueWatch.StreamerListFragment;
 
 import android.app.Fragment;
 import android.os.AsyncTask;
@@ -24,14 +28,19 @@ public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> 
 	protected ArrayList<Streamer> doInBackground(Void... params) {
 		running = true;
 		
-		Twitch t = new Twitch("http://api.justin.tv/api/stream/list.json?category=gaming&meta_game=League%20of%20Legends");
-		return t.fetch();
+		Twitch t = new Twitch("https://api.twitch.tv/kraken/streams?game=League+of+Legends");
+		Own3d o = new Own3d("http://api.own3d.tv/live.php?game=LoL");
+		ArrayList<Streamer> s = t.fetch();
+		s.addAll(o.fetch());
+		Collections.sort(s);
 		
+		return s;
 	}
 	
 	@Override
 	protected void onPostExecute(ArrayList<Streamer> result) {
 		fragmentToUpdate.listAdapter.database = result;
+		Collections.sort(result);
 		fragmentToUpdate.listAdapter.notifyDataSetChanged();
 		running = false;
     }	

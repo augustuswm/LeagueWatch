@@ -25,5 +25,6 @@
 
     <!-- This is a complex string containing style runs. -->
     <string name="main_label">Hello <u>th<ignore>e</ignore>re</u>, <i>you</i> <b>Activity</b>!</string>
+    <string name="champ_icon_label">Current Champion</string>
 </resources>
 

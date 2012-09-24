@@ -9,6 +9,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class StreamGroupAdapter extends FragmentPagerAdapter {
 
 	private List<Fragment> fragments;
+	
+	private static final String[] TITLES = new String[] { 
+        "Trending", 
+        "Popular", 
+        "Tournaments" 
+    };
+	
 	/**
 	 * @param fm
 	 * @param fragments
@@ -36,7 +43,11 @@ public class StreamGroupAdapter extends FragmentPagerAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return 3;
+		return 1;
 	}
+
+    public String getPageTitle(int position) {
+        return TITLES[position % 3].toUpperCase();
+    }
 
 }

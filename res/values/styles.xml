@@ -9,4 +9,29 @@
     </style>
     <!-- If you want a slightly different color for some text,
          consider using ?android:attr/textColorSecondary -->
+	<style name="Theme.Styled" parent="Theme.Sherlock.Light.DarkActionBar">
+		<item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+	    <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="vpiTitlePageIndicatorStyle">@style/CustomTitlePageIndicator</item>
+	</style>
+	
+	<style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+	    <item name="background">@drawable/actionbarbackground</item>
+	    <item name="android:background">@drawable/actionbarbackground</item>
+	
+	    <item name="backgroundSplit">@drawable/actionbarbackground</item>
+	    <item name="android:backgroundSplit">@drawable/actionbarbackground</item>
+	</style>
+	
+	<style name="CustomTitlePageIndicator">
+        <item name="android:background">#0d273a</item>
+        <item name="footerColor">#3a82d1</item>
+        <item name="footerLineHeight">1dp</item>
+        <item name="footerIndicatorHeight">3dp</item>
+        <item name="footerIndicatorStyle">underline</item>
+        <item name="android:textColor">#aeaeae</item>
+        <item name="selectedColor">#ffb400</item>
+        <item name="selectedBold">true</item>
+    </style>
+	
 </resources>

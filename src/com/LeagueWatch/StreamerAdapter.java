@@ -7,6 +7,7 @@ import com.LeagueWatch.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -40,29 +41,32 @@ public class StreamerAdapter extends BaseAdapter {
             view = inflator.inflate(R.layout.streamer, null);
             
             final ViewHolder viewHolder = new ViewHolder();
+                        
             viewHolder.name = (TextView) view.findViewById(R.id.name);
+                        
             viewHolder.viewers = (TextView) view.findViewById(R.id.viewers);
             viewHolder.featured = (ImageView) view.findViewById(R.id.featured);
             
             viewHolder.favorite = (CheckBox) view.findViewById(R.id.favorite);
-            viewHolder.favorite
-                    .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            viewHolder.featured = (ImageView) view.findViewById(R.id.featured);
+            
+            viewHolder.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        	
-                            Streamer element = (Streamer) viewHolder.favorite.getTag();
-                            element.favorite = buttonView.isChecked();
-                                                        
-                            /*if (element.id != null) {
-	                            if (buttonView.isChecked())
-	                            	Settings.addFavorite(new Long(element.id));
-	                            else
-	                            	Settings.removeFavorite(new Long(element.id));
-                            }*/
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                	
+                    Streamer element = (Streamer) viewHolder.favorite.getTag();
+                    element.favorite = buttonView.isChecked();
+                                                
+                    /*if (element.id != null) {
+                        if (buttonView.isChecked())
+                        	Settings.addFavorite(new Long(element.id));
+                        else
+                        	Settings.removeFavorite(new Long(element.id));
+                    }*/
 
-                        }
-                    });
+                }
+            });
             
             view.setTag(viewHolder);
             viewHolder.favorite.setTag(database.get(position));
@@ -75,11 +79,12 @@ public class StreamerAdapter extends BaseAdapter {
         }
         
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.id = database.get(position).id;
-        holder.name.setText(database.get(position).name);
-        holder.viewers.setText(database.get(position).viewers + " - " + database.get(position).service + ".tv");
-        holder.name.setText(database.get(position).name);
+        holder.id = database.get(position).getId();
+        holder.name.setText(database.get(position).getName());
+        holder.viewers.setText(database.get(position).getViewers() + " - " + database.get(position).getService() + ".tv");
+        holder.name.setText(database.get(position).getName());
         holder.favorite.setChecked(database.get(position).favorite);
+        holder.featured.setImageResource(database.get(position).getChampion());
         
 		return view;
 	}

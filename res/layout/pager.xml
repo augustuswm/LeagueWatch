@@ -4,10 +4,19 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:orientation="vertical"
-  >
+  android:background="#000000">
+  
+  <com.viewpagerindicator.TitlePageIndicator
+      android:id="@+id/titles"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textSize="10sp"
+      android:background="#0d273a" />
+  
   <android.support.v4.view.ViewPager
   	android:id="@+android:id/viewpager"
   	android:layout_width="fill_parent"
  	android:layout_height="fill_parent"
   	/>
+  
 </LinearLayout>

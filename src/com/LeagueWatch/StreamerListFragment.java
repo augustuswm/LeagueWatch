@@ -2,9 +2,12 @@ package com.LeagueWatch;
 
 import java.util.ArrayList;
 
+import com.LeagueWatch.Data.DatabaseUpdater;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +53,6 @@ public class StreamerListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.streamer_list, container, false);
-        View tv = v.findViewById(R.id.text);
         dbUpdate = new DatabaseUpdater(this);
         dbUpdate.updateFragment();
         return v;
@@ -63,6 +65,6 @@ public class StreamerListFragment extends ListFragment {
     }
     
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {   
+    public void onListItemClick(ListView l, View v, int position, long id) {
     }
 }

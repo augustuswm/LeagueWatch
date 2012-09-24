@@ -5,15 +5,56 @@ import java.io.Serializable;
 public class Streamer implements Comparable<Object>, Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	String name;
-	Long id;
-	int viewers;
-	String service;
+	private String name;
+	private Long id;
+	private int viewers;
+	private int champion;
+	private String service;
 	boolean favorite;
 	boolean featured;
 	
 	@Override
 	public int compareTo(Object another) {
-		return -1*this.viewers + ((Streamer)another).viewers;
+		return -1*this.getViewers() + ((Streamer)another).getViewers();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getViewers() {
+		return viewers;
+	}
+
+	public void setViewers(int viewers) {
+		this.viewers = viewers;
+	}
+
+	public int getChampion() {
+		return champion;
+	}
+
+	public void setChampion(int champion) {
+		this.champion = champion;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public void setService(String service) {
+		this.service = service;
 	}
 }

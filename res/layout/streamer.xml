@@ -5,17 +5,26 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:padding="5dip" >
-
+
     <ImageView
         android:id="@+id/featured"
         android:layout_width="48dip"
         android:layout_height="48dip"
-        android:layout_alignParentRight="true" android:layout_marginLeft="5dip"/>
-
+        android:layout_alignBottom="@+id/viewers"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dip"
+        android:clickable="false"
+        android:contentDescription="@string/champ_icon_label"
+        android:longClickable="false"
+        android:src="@drawable/unknown" />
+
     <CheckBox
         android:id="@+id/favorite"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:button="@drawable/btn_check"
+        android:checked="true" />
 
     <TextView
         android:id="@+id/name"
@@ -23,11 +32,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/viewers"
         android:layout_alignTop="@+id/featured"
+        android:layout_marginLeft="5dip"
         android:layout_toLeftOf="@+id/featured"
         android:layout_toRightOf="@+id/favorite"
+        android:clickable="false"
         android:gravity="bottom"
+        android:longClickable="false"
         android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="#ffffff" android:layout_marginLeft="5dip"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/viewers"
@@ -36,7 +49,10 @@
         android:layout_alignBottom="@+id/favorite"
         android:layout_alignLeft="@+id/name"
         android:layout_alignRight="@+id/name"
+        android:clickable="false"
+        android:longClickable="false"
         android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="#999999"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#555555" />
 
 </RelativeLayout>
