@@ -41,7 +41,7 @@ public class Twitch extends FetchStream {
 					Streamer s = new Streamer();
 					String elophantUrl = "";
 					
-					s.setId(channel.getLong("_id"));
+					s.setId("" + channel.getLong("_id"));
 					s.setViewers(jsonObject.getInt("viewers"));
 					
 					s.setName(channel.getString("display_name"));

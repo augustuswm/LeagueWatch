@@ -127,7 +127,7 @@ public class Elophant extends FetchStream {
 		//championIcons[143] = R.drawable.zyra;
 		championIcons[143] = R.drawable.unknown;
 		
-		Log.d("Stream", url);
+		//Log.d("Stream", url);
 		
 	}
 	
@@ -144,7 +144,7 @@ public class Elophant extends FetchStream {
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
 					
 					if (jsonObject.getString("summonerInternalName").equalsIgnoreCase(streamerName.replace(" ", ""))) {
-						Log.d("Stream", Integer.toString(championIcons[jsonObject.getInt("championId")]));
+						//Log.d("Stream", Integer.toString(championIcons[jsonObject.getInt("championId")]));
 						return championIcons[jsonObject.getInt("championId")];
 					}
 					

@@ -21,7 +21,7 @@ public class StreamerAdapter extends BaseAdapter {
 	public ArrayList<Streamer> database;
 	
 	private class ViewHolder {
-		protected Long id;
+		protected String id;
 		protected TextView name;
 		protected TextView viewers;
 		protected CheckBox favorite;

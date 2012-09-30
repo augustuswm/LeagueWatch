@@ -17,6 +17,8 @@ import android.view.View;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import com.google.android.gcm.GCMRegistrar;
+
 public class LeagueWatchActivity extends SherlockFragmentActivity {
 		
 	/** maintains the pager adapter*/
@@ -31,6 +33,16 @@ public class LeagueWatchActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+				
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		if (regId.equals("")) {
+		  GCMRegistrar.register(this, "807621216747");
+		} else {
+		  Log.d("Registration", "Already registered");
+		}
+		
         setContentView(R.layout.pager);
         
         mAdapter = new StreamGroupAdapter(getSupportFragmentManager(), null);
@@ -43,18 +55,8 @@ public class LeagueWatchActivity extends SherlockFragmentActivity {
         TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.titles);
         titleIndicator.setViewPager(mPager);
         
-        register();
+        //register();
 		//initialsie the pager
-	}
-	
-	public void register() {
-		Log.w("C2DM", "start registration process");
-		Intent intent = new Intent("com.google.android.c2dm.intent.REGISTER");
-		intent.putExtra("app",
-				PendingIntent.getBroadcast(this, 0, new Intent(), 0));
-		// Sender currently not used
-		intent.putExtra("sender", "gusmayo@gmail.com");
-		startService(intent);
 	}
 	
 	protected void onResume() {

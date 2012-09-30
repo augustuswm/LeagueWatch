@@ -6,7 +6,7 @@ public class Streamer implements Comparable<Object>, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private Long id;
+	private String id;
 	private int viewers;
 	private int champion;
 	private String service;
@@ -18,11 +18,11 @@ public class Streamer implements Comparable<Object>, Serializable {
 		return -1*this.getViewers() + ((Streamer)another).getViewers();
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

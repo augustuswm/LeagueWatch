@@ -28,10 +28,8 @@ public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> 
 	protected ArrayList<Streamer> doInBackground(Void... params) {
 		running = true;
 		
-		Twitch t = new Twitch("https://api.twitch.tv/kraken/streams?game=League+of+Legends");
-		Own3d o = new Own3d("http://api.own3d.tv/live.php?game=LoL");
+		LeagueWatch t = new LeagueWatch("http://www.augustuswm.com/streamers");
 		ArrayList<Streamer> s = t.fetch();
-		s.addAll(o.fetch());
 		Collections.sort(s);
 		
 		return s;

@@ -111,7 +111,7 @@ public class Own3d extends FetchStream {
 	            s.setViewers(Integer.parseInt(readAttribute(parser, "misc", "viewers")));
 	        } else if (name.equals("link")) {
 	            String idString = readTag(parser, "link");
-	            s.setId(Long.getLong(idString.substring(idString.lastIndexOf("/"))));
+	            s.setId("" + Long.getLong(idString.substring(idString.lastIndexOf("/"))));
 	        } else {
 	            skip(parser);
 	        }
