@@ -21,6 +21,7 @@ public class StreamerListFragment extends ListFragment {
     // in your app.
 	public StreamerAdapter listAdapter;
 	private DatabaseUpdater dbUpdate = null;
+	private String url = "";
 		
 	/**
      * Create a new instance of CountingFragment, providing "num"
@@ -28,7 +29,8 @@ public class StreamerListFragment extends ListFragment {
      */
     static StreamerListFragment newInstance(int num) {
     	StreamerListFragment f = new StreamerListFragment();
-
+    	
+    	
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putInt("num", num);
@@ -62,6 +64,14 @@ public class StreamerListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setListAdapter(listAdapter);
+    }
+    
+    public String setUrl(String url) {
+    	return this.url = url;
+    }
+    
+    public String getUrl() {
+    	return url;
     }
     
     @Override

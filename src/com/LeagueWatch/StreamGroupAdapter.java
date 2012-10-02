@@ -16,6 +16,12 @@ public class StreamGroupAdapter extends FragmentPagerAdapter {
         "Tournaments" 
     };
 	
+	private static final String[] URLS = new String[] { 
+        "http://www.augustuswm.com/streamers", 
+        "http://www.augustuswm.com/streamers", 
+        "http://www.augustuswm.com/streamers/tournaments" 
+    };
+	
 	/**
 	 * @param fm
 	 * @param fragments
@@ -35,7 +41,9 @@ public class StreamGroupAdapter extends FragmentPagerAdapter {
 	 */
 	@Override
 	public Fragment getItem(int position) {
-        return StreamerListFragment.newInstance(position);
+		StreamerListFragment f = StreamerListFragment.newInstance(position);
+		f.setUrl(URLS[position % 3]);
+		return f;
 	}
 
 	/* (non-Javadoc)
@@ -43,7 +51,7 @@ public class StreamGroupAdapter extends FragmentPagerAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return 1;
+		return 3;
 	}
 
     public String getPageTitle(int position) {

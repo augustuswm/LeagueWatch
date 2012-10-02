@@ -28,7 +28,7 @@ public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> 
 	protected ArrayList<Streamer> doInBackground(Void... params) {
 		running = true;
 		
-		LeagueWatch t = new LeagueWatch("http://www.augustuswm.com/streamers");
+		LeagueWatch t = new LeagueWatch(fragmentToUpdate.getUrl());
 		ArrayList<Streamer> s = t.fetch();
 		Collections.sort(s);
 		

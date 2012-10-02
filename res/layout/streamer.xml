@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lineItem"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+    android:layout_gravity="top"
+    android:gravity="center_vertical|top"
     android:padding="5dip" >
-
+
     <ImageView
         android:id="@+id/featured"
         android:layout_width="48dip"
@@ -15,8 +16,7 @@
         android:layout_marginLeft="5dip"
         android:clickable="false"
         android:contentDescription="@string/champ_icon_label"
-        android:longClickable="false"
-        android:src="@drawable/unknown" />
+        android:longClickable="false" />
 
     <CheckBox
         android:id="@+id/favorite"
@@ -25,7 +25,7 @@
         android:layout_alignParentLeft="true"
         android:button="@drawable/btn_check"
         android:checked="true" />
-
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -38,10 +38,9 @@
         android:clickable="false"
         android:gravity="bottom"
         android:longClickable="false"
-        android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#000000" />
-
+
     <TextView
         android:id="@+id/viewers"
         android:layout_width="wrap_content"
@@ -51,7 +50,6 @@
         android:layout_alignRight="@+id/name"
         android:clickable="false"
         android:longClickable="false"
-        android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#555555" />
 
