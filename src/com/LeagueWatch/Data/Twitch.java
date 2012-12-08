@@ -8,10 +8,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.LeagueWatch.R;
 import com.LeagueWatch.Streamer;
-
-import android.util.Log;
 
 public class Twitch extends FetchStream {
 

@@ -4,53 +4,70 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:gravity="center_vertical|top"
-    android:padding="5dip" >
-
+    android:animateLayoutChanges="false"
+    android:gravity="top|left"
+    android:padding="10dip" >
+
     <ImageView
         android:id="@+id/featured"
         android:layout_width="48dip"
         android:layout_height="48dip"
-        android:layout_alignBottom="@+id/viewers"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="5dip"
+        android:layout_alignParentTop="true"
         android:clickable="false"
         android:contentDescription="@string/champ_icon_label"
-        android:longClickable="false" />
-
-    <CheckBox
-        android:id="@+id/favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:button="@drawable/btn_check"
-        android:checked="true" />
-
+        android:longClickable="false"
+        android:paddingRight="5dip" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/viewers"
         android:layout_alignTop="@+id/featured"
-        android:layout_marginLeft="5dip"
-        android:layout_toLeftOf="@+id/featured"
-        android:layout_toRightOf="@+id/favorite"
+        android:layout_toRightOf="@+id/featured"
         android:clickable="false"
         android:gravity="bottom"
         android:longClickable="false"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/viewers"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#312709"
+        android:textSize="16sp" />
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/favorite"
-        android:layout_alignLeft="@+id/name"
-        android:layout_alignRight="@+id/name"
-        android:clickable="false"
-        android:longClickable="false"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#555555" />
+        android:layout_below="@+id/name"
+        android:layout_marginLeft="48dip" >
+
+        <TextView
+            android:id="@+id/playing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewers"
+            android:clickable="false"
+            android:longClickable="false"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#1d5999"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/riotfist"
+            android:layout_width="16dip"
+            android:layout_height="16dip"
+            android:layout_marginRight="5dip"
+            android:contentDescription="@string/riot_badge"
+            android:src="@drawable/riotfist"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/viewers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/riotfist"
+            android:clickable="false"
+            android:longClickable="false"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#666666"
+            android:textSize="12sp" />
+        
+    </RelativeLayout>
 
 </RelativeLayout>

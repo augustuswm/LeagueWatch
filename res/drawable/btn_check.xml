@@ -20,30 +20,30 @@
         
     <item android:state_checked="true" android:state_window_focused="false"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_on" />
+          android:drawable="@drawable/on" />
     <item android:state_checked="false" android:state_window_focused="false"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_off" />
+          android:drawable="@drawable/off" />
 
     <item android:state_checked="true" android:state_pressed="true"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_on" />
+          android:drawable="@drawable/on_pressed" />
     <item android:state_checked="false" android:state_pressed="true"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_off" />
+          android:drawable="@drawable/off_pressed" />
 
     <item android:state_checked="true" android:state_focused="true"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_on" />
+          android:drawable="@drawable/on_pressed" />
     <item android:state_checked="false" android:state_focused="true"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_off" />
+          android:drawable="@drawable/off_pressed" />
 
     <item android:state_checked="false"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_off" />
+          android:drawable="@drawable/off" />
     <item android:state_checked="true"
           android:state_enabled="true"
-          android:drawable="@drawable/checkbox_on" />
+          android:drawable="@drawable/on" />
 
 </selector>

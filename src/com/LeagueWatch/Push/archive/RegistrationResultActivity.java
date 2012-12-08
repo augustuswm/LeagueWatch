@@ -1,9 +1,6 @@
-package com.LeagueWatch.Push;
+package com.LeagueWatch.Push.archive;
 
 import com.LeagueWatch.R;
-import com.LeagueWatch.R.id;
-import com.LeagueWatch.R.layout;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;

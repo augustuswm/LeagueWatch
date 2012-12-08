@@ -1,4 +1,4 @@
-package com.LeagueWatch.Push;
+package com.LeagueWatch.Push.archive;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.LeagueWatch.R;
-import com.LeagueWatch.R.drawable;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

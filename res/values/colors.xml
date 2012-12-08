@@ -25,4 +25,10 @@
 
     <!-- Retrieved via Resources.getDrawable() and friends. -->
     <drawable name="semi_black">#80000000</drawable>
+    <drawable name="transparent">#00000000</drawable>
+    <color name="link">#1e4f80</color>
+    <drawable name="highlight">#f3af03</drawable>
+    <drawable name="listitemalternate">#e3e3e3</drawable>
+    <drawable name="listitem">#f3f3f3</drawable>
+    <drawable name="photoNameBackground">#c0042847</drawable>
 </resources>

@@ -1,14 +1,9 @@
 package com.LeagueWatch.Data;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.LeagueWatch.R;
-import com.LeagueWatch.Streamer;
 
 public class Elophant extends FetchStream {
 	
