@@ -38,6 +38,12 @@
                 android:padding="15dip"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff" />
+
+            <fragment
+                android:name="com.LeagueWatch.RecentGameListFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/controls" />
 
             <LinearLayout
                 android:id="@+id/controls"
@@ -77,14 +83,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-
-            <ListView
-                android:id="@+id/recent_games_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/controls" >
-
-            </ListView>
 
         </RelativeLayout>
     </ScrollView>

@@ -28,7 +28,7 @@ public class RecentGameListFragment extends UpdatableListFragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	    View view = inflater.inflate(R.id.recent_games_list, null);
+	    View view = inflater.inflate(R.layout.recent_games_list, null);
 	    return view;
     }
 
