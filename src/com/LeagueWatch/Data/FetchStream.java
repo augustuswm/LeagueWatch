@@ -23,15 +23,14 @@ public class FetchStream {
 
 	private String url;
 	
-	public FetchStream (String url) {
-		this.url = url;
+	public FetchStream () {
 	}
 	
 	public void setURL (String url) {
 		this.url = url;
 	}
 
-	public ArrayList<Streamer> fetch() {
+	public ArrayList fetch(String arg) {
 		return null;
 	}
 	

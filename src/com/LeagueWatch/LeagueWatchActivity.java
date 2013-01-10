@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -33,6 +36,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+    	//GCMRegistrar.unregister(getApplicationContext());
 		
 		checkNotNull(CommonUtilities.SERVER_URL, "SERVER_URL");
         checkNotNull(CommonUtilities.SENDER_ID, "SERVER_ID");
@@ -46,20 +50,20 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
         final String regId = GCMRegistrar.getRegistrationId(this);
         if (regId.equals("")) {
             // Automatically registers application on startup.
-            Log.d("Stream", "Register this device");
+        	//Log.d("Stream", "Register this device");
         	GCMRegistrar.register(this, CommonUtilities.SENDER_ID);
         } else {
             // Device is already registered on GCM, check server.
             if (GCMRegistrar.isRegisteredOnServer(this)) {
             	//GCMRegistrar.
                 // Skips registration.
-            	Log.d("Stream", "Already registered");
+            	//Log.d("Stream", "Already registered");
                 //mDisplay.append(getString(R.string.already_registered) + "\n");
             } else {
                 // Try to register again, but not in the UI thread.
                 // It's also necessary to cancel the thread onDestroy(),
                 // hence the use of AsyncTask instead of a raw thread.
-                Log.d("Stream", "Register this device again");
+                //Log.d("Stream", "Register this device again");
                 final Context context = this;
                 mRegisterTask = new AsyncTask<Void, Void, Void>() {
 
@@ -79,16 +83,6 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             }
         }
 		
-				
-		/*GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
-		final String regId = GCMRegistrar.getRegistrationId(this);
-		if (regId.equals("")) {
-			GCMRegistrar.register(this, "807621216747");
-		} else {
-			Log.d("Stream", "Already registered");
-		}*/
-
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         
         setContentView(R.layout.main);
@@ -112,8 +106,40 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             f.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, f).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, f).commit();
+        } else {
+
+        	//Log.d("Stream", "Two pane layout");
+        	
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Create an instance of ExampleFragment
+            f = new StreamerListFragment();
+
+            // In case this activity was started with special instructions from an Intent,
+            // pass the Intent's extras to the fragment as arguments
+            f.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction().add(R.id.streamer_list_fragment, f).commit();     	
+            
+
+    		RecentGameListFragment recentGames = new RecentGameListFragment();
+            Bundle args = new Bundle();
+            String suffix = "_t";
+            args.putString("streamer_id", "00000" + suffix);
+            args.putString("name", "First Pane");
+            args.putString("thumbnail", "");
+            recentGames.setArguments(args);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.recent_games_list_fragment, recentGames);
+            transaction.commit();
+        	
         }
         
         
@@ -121,71 +147,55 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	}
 
     public void onStreamerSelected(Streamer selectedStreamer) {
+    	
         // The user selected the headline of an article from the HeadlinesFragment
 
         // Capture the article fragment from the activity layout
-        Player playerFrag = (Player)getSupportFragmentManager().findFragmentById(R.id.players);
-
+    	RecentGameListFragment playerFrag = (RecentGameListFragment)getSupportFragmentManager().findFragmentById(R.id.recent_games_list_fragment);
+    	
         //if (articleFrag != null) {
     	if (playerFrag != null) {
             // If article frag is available, we're in two-pane layout...
 
-            // Call a method in the ArticleFragment to update its content
-    		
-    		playerFrag.updatePlayerView(0, selectedStreamer.getName(), selectedStreamer.getThumbnail(), selectedStreamer.getService(), selectedStreamer.getId());
-    		
-    		/*if (playerFrag instanceof Player)
-    			playerFrag.updatePlayerView(position);
-    		else {*/
+    		RecentGameListFragment recentGames = new RecentGameListFragment();
+            Bundle args = new Bundle();
+            String suffix = selectedStreamer.getService() == "Twitch" ? "_t" : "_o";
+            args.putString("streamer_id", selectedStreamer.getId() + suffix);
+            args.putString("name", selectedStreamer.getName());
+            args.putString("thumbnail", selectedStreamer.getThumbnail());
+            recentGames.setArguments(args);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-    	    	/*StreamerListFragment streamerlist = (StreamerListFragment)getSupportFragmentManager().findFragmentById(R.id.streamers);
-    			String playerid = ((Streamer)streamerlist.listAdapter.getItem(position)).getId();
-    			String playername = ((Streamer)streamerlist.listAdapter.getItem(position)).getId();*/
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.replace(R.id.recent_games_list_fragment, recentGames);
+            //transaction.addToBackStack(null);
+            transaction.commit();
     		
-	    		// Create fragment and give it an argument for the selected article
-	            /*WatchStreamer video = new WatchStreamer();
-	            Bundle args = new Bundle();
-	            args.putString("url", "http://www.twitch.tv/"+"robertxlee"+"/popout");
-	            video.setArguments(args);
-	            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-	
-	            // Replace whatever is in the fragment_container view with this fragment,
-	            // and add the transaction to the back stack so the user can navigate back
-	            //transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-	            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-	            transaction.replace(R.id.players, video);
-	            transaction.addToBackStack(null);
-	            transaction.commit();*/
-    		//}
-    		
-
         } else {
             // If the frag is not available, we're in the one-pane layout and must swap frags...
         	
-            getSupportActionBar().setTitle(selectedStreamer.getName());
+        	getSupportActionBar().setTitle(selectedStreamer.getName());
         	
-            // Create fragment and give it an argument for the selected article
-            Player player = new Player();
+        	RecentGameListFragment recentGames = new RecentGameListFragment();
             Bundle args = new Bundle();
-            args.putInt(Player.ARG_POSITION, 0);
-            args.putString(Player.ARG_NAME, selectedStreamer.getName());
-            args.putString(Player.ARG_THUMBNAIL, selectedStreamer.getThumbnail());
-            args.putString(Player.ARG_SERVICE, selectedStreamer.getService());
-            args.putString(Player.ARG_ID, selectedStreamer.getId());
-            player.setArguments(args);
+            String suffix = selectedStreamer.getService() == "Twitch" ? "_t" : "_o";
+            args.putString("streamer_id", selectedStreamer.getId() + suffix);
+            args.putString("name", selectedStreamer.getName());
+            args.putString("thumbnail", selectedStreamer.getThumbnail());
+            recentGames.setArguments(args);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-          
+
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
-            //transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.streamers, player);
+            transaction.replace(R.id.fragment_container, recentGames);
             transaction.addToBackStack(null);
-
-            // Commit the transaction
             transaction.commit();
-                        
-            //player.updatePlayerView(position, playername);
+        	
         }
     }
 	
@@ -198,15 +208,43 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
+    	// Handle item selection
+        switch (item.getItemId()) {
+            case R.id.Settings:
+            	Intent intent = new Intent(this, Preferences.class);
+                startActivity(intent);
+                return true;
+            case R.id.Feedback:
+                return true;
+            case R.id.About:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (f != null && f.updateHandler != null && f.r != null)
-			f.updateHandler.post(f.r);
-		Log.d("Stream", "Resuming");
+		
+		if (findViewById(R.id.fragment_container) != null) {
+			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+			if (f != null && f.r != null)
+				f.r.revive();			
+		} else {
+			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.streamer_list_fragment);
+			if (f != null && f.r != null)
+				f.r.revive();
+		}
+		//Log.d("Stream", "Resuming");
+		//Log.d("Stream", "Fragment: " + f);
+		//if (f != null)
+		//	Log.d("Stream", "Runnable: " + f.r);
+		//if (f != null && f.r != null)
+			//Log.d("Stream", "Runnable is alive: " + (!f.r.isKilled()));
+		//if (f != null && f.updateHandler != null && f.r != null)
+			//f.updateHandler.post(f.r);
+		//Log.d("Stream", "Resuming");
 		/*if (dbUpdate == null)
 	        dbUpdate = new DatabaseUpdater();
 			
@@ -216,9 +254,23 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (f != null && f.r != null)
-			f.r.killRunnable();
-		Log.d("Stream", "Pausing");
+		
+		if (findViewById(R.id.fragment_container) != null) {
+			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+			if (f != null && f.r != null)
+				f.r.killRunnable();			
+		} else {
+			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.streamer_list_fragment);
+			if (f != null && f.r != null)
+				f.r.killRunnable();
+		}
+		//Log.d("Stream", "Pausing");
+		//Log.d("Stream", "Fragment: " + f);
+		//if (f != null)
+		//	Log.d("Stream", "Runnable: " + f.r);
+		//if (f != null && f.r != null)
+			//Log.d("Stream", "Runnable is dead: " + f.r.isKilled());
+		
 		/*if (dbUpdate == null)
 	        dbUpdate = new DatabaseUpdater();
 			

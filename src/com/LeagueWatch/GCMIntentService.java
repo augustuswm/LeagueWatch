@@ -24,6 +24,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.LeagueWatch.R;
@@ -59,10 +60,25 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
-        String message = getString(R.string.gcm_message);
-        displayMessage(context, message);
-        // notifies user
-        //generateNotification(context, message);
+        //String message = getString(R.string.gcm_message);
+        //displayMessage(context, message);
+    	
+        String streamerName = intent.getStringExtra("streamer_name");
+        
+    	NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+    	NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+    	  
+    	Intent launchIntent = new Intent(context, LeagueWatchActivity.class);
+    	PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+    	  
+		builder
+		.setSmallIcon(R.drawable.ic_stat_example)
+		.setContentTitle("Favorite streamer is now online")
+		.setTicker(streamerName + " started streaming.")
+		.setContentIntent(pendingIntent)
+		.setAutoCancel(true);
+		  
+		notificationManager.notify(435147, builder.build());
     }
 
     @Override
@@ -92,6 +108,7 @@ public class GCMIntentService extends GCMBaseIntentService {
      * Issues a notification to inform the user that server has sent a message.
      */
     private static void generateNotification(Context context, String message) {
+    	
         /*int icon = R.drawable.ic_stat_gcm;
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)

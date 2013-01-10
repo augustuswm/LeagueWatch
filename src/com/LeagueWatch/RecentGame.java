@@ -12,6 +12,10 @@ public class RecentGame implements Comparable<Object>, Serializable  {
 	private int champion;
 	private int summoner_spell_1;
 	private int summoner_spell_2;
+	private int kills;
+	private int deaths;
+	private int assists;
+
 	private int[] items = new int[6];
 	
 	@Override
@@ -49,6 +53,10 @@ public class RecentGame implements Comparable<Object>, Serializable  {
 
 	public boolean isWin() {
 		return win;
+	}
+
+	public String isWinAsString() {
+		return win ? "Win" : "Lose";
 	}
 
 	public void setWin(boolean win) {
@@ -93,6 +101,29 @@ public class RecentGame implements Comparable<Object>, Serializable  {
 
 	public int setItem(int index, int item) {
 		return this.items[index] = item;
+	}
+	public int getKills() {
+		return kills;
+	}
+
+	public void setKills(int kills) {
+		this.kills = kills;
+	}
+
+	public int getDeaths() {
+		return deaths;
+	}
+
+	public void setDeaths(int deaths) {
+		this.deaths = deaths;
+	}
+
+	public int getAssists() {
+		return assists;
+	}
+
+	public void setAssists(int assists) {
+		this.assists = assists;
 	}
 	
 }

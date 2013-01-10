@@ -17,19 +17,24 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> {
 	
 	private UpdatableListFragment fragmentToUpdate;
 	private FragmentActivity activity;
 	private boolean running = false;
+	private String fetchArg = null;
 	
 	public DatabaseUpdater (UpdatableListFragment updatableListFragment, FragmentActivity activity) {
 		this.fragmentToUpdate = updatableListFragment;
 		this.activity = activity;
 	}
 	
-	public void updateFragment () {
+	public void updateFragment (String fetchArg) {
+		if (fetchArg != null && fetchArg.length() > 0)
+			this.fetchArg = fetchArg;
+		
 		if (!running)
 			this.execute();
 	}
@@ -45,8 +50,8 @@ public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> 
 	protected ArrayList<Streamer> doInBackground(Void... params) {
 		running = true;
 		
-		LeagueWatch t = new LeagueWatch("http://www.augustuswm.com/streamers");
-		ArrayList<Streamer> s = t.fetch();
+		LeagueWatch t = new LeagueWatch();
+		ArrayList<Streamer> s = t.fetch(fetchArg);
 		Collections.sort(s);
 		
 		return s;
@@ -54,7 +59,7 @@ public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> 
 	
 	@Override
 	protected void onPostExecute(ArrayList result) {
-				
+		
 		fragmentToUpdate.listAdapter.setDatabase(result);
 		//Collections.sort(result);
 		fragmentToUpdate.listAdapter.notifyDataSetChanged();

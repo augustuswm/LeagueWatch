@@ -55,8 +55,9 @@ public class StreamerAdapter extends UpdatableAdapter {
             //viewHolder.riot = (ImageView) view.findViewById(R.id.riotfist);
             viewHolder.riot = (ImageView) view.findViewById(R.id.riotfist);
             viewHolder.viewers = (TextView) view.findViewById(R.id.viewers);
+            /*viewHolder.favorite = (CheckBox) view.findViewById(R.id.favorite);
             
-            /*viewHolder.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            viewHolder.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -66,12 +67,14 @@ public class StreamerAdapter extends UpdatableAdapter {
                     Collections.sort(database);
                     adapterToUpdate.notifyDataSetChanged();
                     
-                    /*if (element.id != null) {
-                        if (buttonView.isChecked())
-                        	Settings.addFavorite(new Long(element.id));
-                        else
-                        	Settings.removeFavorite(new Long(element.id));
-                    }*
+                    Log.d("Stream", element.getName() + " favorited.");
+                    
+                    //if (element.id != null) {
+                    //    if (buttonView.isChecked())
+                    //    	Settings.addFavorite(new Long(element.id));
+                    //    else
+                    //    	Settings.removeFavorite(new Long(element.id));
+                    //}
 
                 }
             });*/
@@ -98,10 +101,10 @@ public class StreamerAdapter extends UpdatableAdapter {
         holder.riot.setVisibility(database.get(position).getFeatured());
         holder.viewers.setText(database.get(position).getViewers() + " - " + database.get(position).getService() + ".tv");
         
-        /*if (position % 2 == 1)
-        	view.setBackgroundResource(R.drawable.listitemalternate);
+        /*if (database.get(position).isSelected())
+        	view.setBackgroundResource(R.drawable.highlight);
         else
-        	view.setBackgroundResource(R.drawable.listitem);*/
+        	view.setBackgroundResource(R.drawable.transparent);*/
         
 		return view;
 	}

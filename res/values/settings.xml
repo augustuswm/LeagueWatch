@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="downloadTiming">
+        <item>1 minute</item>
+        <item>5 minute</item>
+        <item>10 minute</item>
+    </string-array>
+    <string-array name="downloadTimingValues">
+        <item>60000</item>
+        <item>300000</item>
+        <item>600000</item>
+    </string-array>
+    <string-array name="uploadTiming">
+        <item>1 minute</item>
+        <item>5 minute</item>
+        <item>10 minute</item>
+        <item>Do not sync</item>
+    </string-array>
+    <string-array name="uploadTimingValues">
+        <item>60000</item>
+        <item>300000</item>
+        <item>600000</item>
+        <item>0</item>
+    </string-array>
+</resources>

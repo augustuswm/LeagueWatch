@@ -61,16 +61,17 @@ public final class ServerUtilities {
      *
      */
     public static void register(final Context context, final String regId) {
-        Log.i(TAG, "registering device (regId = " + regId + ")");
+        //Log.i(TAG, "registering device (regId = " + regId + ")");
         String serverUrl = SERVER_URL;
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
+        params.put("mode", "register");
         long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
         // Once GCM returns a registration id, we need to register it in the
         // demo server. As the server might be down, we will retry it a couple
         // times.
         for (int i = 1; i <= MAX_ATTEMPTS; i++) {
-            Log.d(TAG, "Attempt #" + i + " to register");
+            //Log.d(TAG, "Attempt #" + i + " to register");
             try {
                 //displayMessage(context, context.getString(R.string.server_registering, i, MAX_ATTEMPTS));
                 post(serverUrl, params);
@@ -82,16 +83,16 @@ public final class ServerUtilities {
                 // Here we are simplifying and retrying on any error; in a real
                 // application, it should retry only on unrecoverable errors
                 // (like HTTP error code 503).
-                Log.e(TAG, "Failed to register on attempt " + i + ":" + e);
+                //Log.e(TAG, "Failed to register on attempt " + i + ":" + e);
                 if (i == MAX_ATTEMPTS) {
                     break;
                 }
                 try {
-                    Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
+                    //Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
                     Thread.sleep(backoff);
                 } catch (InterruptedException e1) {
                     // Activity finished before we complete - exit.
-                    Log.d(TAG, "Thread interrupted: abort remaining retries!");
+                    //Log.d(TAG, "Thread interrupted: abort remaining retries!");
                     Thread.currentThread().interrupt();
                     return;
                 }
@@ -107,10 +108,11 @@ public final class ServerUtilities {
      * Unregister this account/device pair within the server.
      */
     public static void unregister(final Context context, final String regId) {
-        Log.i(TAG, "unregistering device (regId = " + regId + ")");
-        String serverUrl = SERVER_URL + "/unregister";
+        //Log.i(TAG, "unregistering device (regId = " + regId + ")");
+        String serverUrl = SERVER_URL;
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
+        params.put("mode", "unregister");
         try {
             post(serverUrl, params);
             GCMRegistrar.setRegisteredOnServer(context, false);
@@ -138,8 +140,8 @@ public final class ServerUtilities {
     private static void post(String endpoint, Map<String, String> params) throws IOException {
     	StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(endpoint + params.get("regId") + "/register");
-		Log.d(TAG, endpoint + params.get("regId") + "/register");
+		HttpGet httpGet = new HttpGet(endpoint + params.get("regId") + "/" + params.get("mode"));
+		//Log.d(TAG, endpoint + params.get("regId") + "/" + params.get("mode"));
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
@@ -153,9 +155,9 @@ public final class ServerUtilities {
 				while ((line = reader.readLine()) != null) {
 					builder.append(line);
 				}*/
-				Log.d("Stream", "Successfully added");
+				//Log.d("Stream", "Successful " + params.get("mode"));
 			} else {
-				Log.d("Stream", "Failed to download file");
+				//Log.d("Stream", "Failed to download file");
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

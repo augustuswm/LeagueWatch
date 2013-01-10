@@ -12,7 +12,7 @@ public class UpdatableListFragment extends SherlockListFragment {
     
     public DatabaseUpdater updateDataSource(FragmentActivity activity) {
     	DatabaseUpdater dbUpdater = new DatabaseUpdater(this, activity);
-    	dbUpdater.updateFragment();
+    	dbUpdater.updateFragment(null);
     	
     	return dbUpdater;
     }

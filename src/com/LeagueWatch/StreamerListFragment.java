@@ -9,9 +9,11 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -25,7 +27,7 @@ import android.widget.ListView;
 
 public  class StreamerListFragment extends UpdatableListFragment {
 
-	private String url = "http://www.augustuswm.com/streamers", title = "";
+	SharedPreferences sharedPref;
 	
     OnItemSelectedListener mCallback;
     
@@ -34,20 +36,33 @@ public  class StreamerListFragment extends UpdatableListFragment {
 
     	@Override
 		public void run() {
-			if (killMe)
+			if (this.killMe)
 				return;
 			else {
+				Log.d("Stream", "Spawning new check");
+				String downloadTimingPref = sharedPref.getString(Preferences.KEY_PREF_DOWNLOAD_TIMING, "");
+				int timeout = !downloadTimingPref.equals("") ? Integer.parseInt(downloadTimingPref) : 60000;
 		    	Message msg;
 		    	msg = Message.obtain();
 		    	msg.obj = true;
 		    	updateHandler.sendMessage(msg);
-		    	updateHandler.postDelayed(r, 10000);
+		    	updateHandler.postDelayed(r, timeout);
 			}
 		
 		}
 
 		public void killRunnable() {
+			updateHandler.removeCallbacks(r);
 			this.killMe = true;
+		}
+
+		public void revive() {
+			updateHandler.post(r);
+			this.killMe = false;
+		}
+		
+		public boolean isKilled() {
+			return this.killMe;
 		}
     }
 
@@ -62,6 +77,8 @@ public  class StreamerListFragment extends UpdatableListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         listAdapter = new StreamerAdapter(getActivity());
         setListAdapter(listAdapter);
@@ -69,7 +86,7 @@ public  class StreamerListFragment extends UpdatableListFragment {
         updateHandler = new Handler() {
 	        @Override
 	        public void handleMessage(Message msg) {
-	        	Log.d("Stream", "Handling Message");
+	        	//Log.d("Stream", "Handling Message");
 	        	if (getActivity() != null) {
 	    	    	updateDataSource(getActivity());
 				    
@@ -83,7 +100,7 @@ public  class StreamerListFragment extends UpdatableListFragment {
 	        }
 	    };
 	    
-	    updateHandler.post(r);
+	    //updateHandler.post(r);
     }
     
     @Override
@@ -95,12 +112,6 @@ public  class StreamerListFragment extends UpdatableListFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        // When in two-pane layout, set the listview to highlight the selected list item
-        // (We do this during onStart because at the point the listview is available.)
-        if (getFragmentManager().findFragmentById(R.id.playerView) != null) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        }
     }
 
     @Override
@@ -119,7 +130,7 @@ public  class StreamerListFragment extends UpdatableListFragment {
     
     public DatabaseUpdater updateDataSource(FragmentActivity activity) {
     	DatabaseUpdater dbUpdater = new DatabaseUpdater(this, activity);
-    	dbUpdater.updateFragment();
+    	dbUpdater.updateFragment(null);
     	
     	return dbUpdater;
     }
@@ -129,11 +140,7 @@ public  class StreamerListFragment extends UpdatableListFragment {
         // Notify the parent activity of selected item    	
     	
         mCallback.onStreamerSelected((Streamer)listAdapter.getItem(position));
-        
-        // Set the item as checked to be highlighted when in two-pane layout
-        if (getFragmentManager().findFragmentById(R.id.playerView) != null)
-        	getListView().setItemChecked(position, true);
-    	
+        //((Streamer)listAdapter.getItem(position)).select();
     	
     	//getActivity().setContentView(R.layout.player);
     	

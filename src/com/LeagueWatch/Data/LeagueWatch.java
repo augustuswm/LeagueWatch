@@ -8,20 +8,89 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.LeagueWatch.R;
+import com.LeagueWatch.RecentGame;
 import com.LeagueWatch.Streamer;
-import com.LeagueWatch.Push.LoLDatabase;
 
 public class LeagueWatch extends FetchStream {
 	
 	private LoLDatabase LoLDB = new LoLDatabase();
 	
-	public LeagueWatch(String url) {
-		super(url);
+	public LeagueWatch() {
+		super();
 	}
 	
 	@Override
-	public ArrayList<Streamer> fetch () {
+	public ArrayList fetch(String streamer_id) {
+		ArrayList returnList = null;
+		
+		if (streamer_id == null || streamer_id.length() == 0) {
+			this.setURL("http://www.leaguewat.ch/streamers");
+			returnList = fetchStreamers();			
+		} else {
+			this.setURL("http://www.leaguewat.ch/streamers/" + streamer_id + "/games/");
+			returnList = fetchRecentGames();				
+		}
+		
+		return returnList;
+	}
+
+	public ArrayList<RecentGame> fetchRecentGames() {
+		ArrayList<RecentGame> db = new ArrayList<RecentGame>();
+		
+		try {
+			String rawJSON = getJSON();
+			JSONArray jsonArray = new JSONArray(rawJSON);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				JSONObject channel = new JSONObject(jsonObject.getString("fields"));
+
+				try {
+					
+					RecentGame g = new RecentGame();
+					
+					g.setId(channel.getString("game_id"));
+					g.setMap_id(channel.getInt("map_id"));
+					try {
+						g.setChampion(LoLDB.getIcon(channel.getInt("champion")));
+					} catch (Exception e) {
+						// Ignore Failure
+					}
+					g.setStreamer_id(channel.getString("streamer_id"));
+					g.setSummoner_spell_1(channel.getInt("summoner_spell_1"));
+					g.setSummoner_spell_2(channel.getInt("summoner_spell_2"));
+					g.setKills(channel.getInt("kills"));
+					g.setDeaths(channel.getInt("deaths"));
+					g.setAssists(channel.getInt("assists"));
+					if (channel.getInt("win") == 1)
+						g.setWin(true);
+					else
+						g.setWin(false);
+					
+					for (int j = 0; j < 6; j++) {
+						try {
+							g.setItem(j, LoLDB.getItemIcon(channel.getInt("item_"+(j+1))));
+						} catch (Exception e) {
+							g.setItem(j, R.drawable.item);
+						}
+					}
+					
+					db.add(g);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return db;
+	}
+	
+	public ArrayList<Streamer> fetchStreamers() {
 		ArrayList<Streamer> db = new ArrayList<Streamer>();
 		
 		try {

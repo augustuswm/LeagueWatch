@@ -3,7 +3,7 @@
     android:id="@+id/streamers"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
+
 	<ListView
 	    android:id="@+id/android:list"
 	    android:layout_width="fill_parent"
@@ -13,9 +13,9 @@
 	    android:layout_alignParentTop="true"
 	    android:animateLayoutChanges="false"
 	    android:cacheColorHint="#00000000"
+	    android:choiceMode="singleChoice"
 	    android:clickable="true"
 	    android:drawSelectorOnTop="false"
-	    android:listSelector="#1d5999"
 	    android:longClickable="true" >
 
 	</ListView>

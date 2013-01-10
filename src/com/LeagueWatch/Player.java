@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -22,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -71,13 +74,22 @@ public class Player extends SherlockFragment {
 		protected void onPostExecute(Drawable result) {
 			running = false;
 	        //Drawable thumbnail = ImageOperations(playerThumbnail);
-	        if (result != null)
-	        	((ImageView)getActivity().findViewById(R.id.profileImage)).setImageDrawable(result);	
+	        if (result != null) {
+	        	//final double viewWidthToBitmapWidthRatio = (double)getActivity().findViewById(R.id.profileImage).getWidth() / (double)result.getMinimumWidth();
+	        	//getActivity().findViewById(R.id.profileImage).getLayoutParams().height = (int) (result.getMinimumHeight() * viewWidthToBitmapWidthRatio);
+	        	
+	        	ImageView view = ((ImageView)getActivity().findViewById(R.id.profileImage));
+	        	view.setImageDrawable(result);
+	        	
+	        }
 	    }
     }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	
+    	Log.d("Stream", "Create player view");
+    	
         // Inflate the layout for this fragment
 
         if (savedInstanceState != null) {
@@ -98,7 +110,7 @@ public class Player extends SherlockFragment {
     public void onStart() {
         super.onStart();
         
-        Button watchButton = (Button)getActivity().findViewById(R.id.watch);
+        /*Button watchButton = (Button)getActivity().findViewById(R.id.watch);
         
         watchButton.setOnClickListener(new Button.OnClickListener() {
 
@@ -130,7 +142,7 @@ public class Player extends SherlockFragment {
 				
 			}
         	
-        });
+        });*/
 
         // During startup, check if there are arguments passed to the fragment.
         // onStart is a good place to do this because the layout has already been
@@ -139,9 +151,11 @@ public class Player extends SherlockFragment {
         Bundle args = getArguments();
         if (args != null) {
             // Set article based on argument passed in
+        	Log.d("Stream", "Player with args");
         	updatePlayerView(args.getInt(ARG_POSITION), args.getString(ARG_NAME), args.getString(ARG_THUMBNAIL), args.getString(ARG_SERVICE), args.getString(ARG_ID));
         } else if (mCurrentPosition != -1) {
             // Set article based on saved instance state defined during onCreateView
+        	Log.d("Stream", "Player no args");
         	updatePlayerView(mCurrentPosition, currentName, currentThumbnail, streamService, streamId);
         }
     }
@@ -158,6 +172,32 @@ public class Player extends SherlockFragment {
         currentName = playerName;
         streamService = playerService;
         streamId = playerId;
+        
+        CheckBox favoriteBox = (CheckBox) (getActivity().findViewById(R.id.favorite));
+        
+        Log.d("Stream", "Checkbox created: " + favoriteBox);
+        
+        favoriteBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            	
+                /*Streamer element = (Streamer) viewHolder.favorite.getTag();
+                element.favorite = buttonView.isChecked();
+                Collections.sort(database);
+                adapterToUpdate.notifyDataSetChanged();*/
+                
+                Log.d("Stream", currentName + " favorited.");
+                
+                //if (element.id != null) {
+                //    if (buttonView.isChecked())
+                //    	Settings.addFavorite(new Long(element.id));
+                //    else
+                //    	Settings.removeFavorite(new Long(element.id));
+                //}
+
+            }
+        });
         
         //currentThumbnail = playerThumbnail;
     }

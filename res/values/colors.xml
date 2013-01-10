@@ -31,4 +31,6 @@
     <drawable name="listitemalternate">#e3e3e3</drawable>
     <drawable name="listitem">#f3f3f3</drawable>
     <drawable name="photoNameBackground">#c0042847</drawable>
+    <color name="white">#FFFFFFFF</color>
+    <drawable name="black">#00000000</drawable>
 </resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="leaguewatch_settings"
+        android:title="Settings"
+        android:persistent="false">
+        <ListPreference
+            android:key="download_timing"
+            android:title="Updates"
+            android:summary="Update streamer list every 1 minute"
+            android:entries="@array/downloadTiming"
+            android:entryValues="@array/downloadTimingValues"
+            android:defaultValue="300000"/>
+        <ListPreference
+            android:key="upload_timing"
+            android:title="Sync"
+            android:summary="Synchronize favoite streamers every X minutes"
+            android:entries="@array/uploadTiming"
+            android:entryValues="@array/uploadTimingValues"
+            android:defaultValue="300000"/>
+		<PreferenceScreen
+        	android:key="favorites_settings"
+        	android:title="Followed streamers"
+            android:summary="Following X streamers"
+        	android:persistent="false">
+		</PreferenceScreen>
+</PreferenceScreen>

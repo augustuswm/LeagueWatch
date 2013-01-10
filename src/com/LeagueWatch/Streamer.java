@@ -13,7 +13,8 @@ public class Streamer implements Comparable<Object>, Serializable {
 	private String service;
 	private int featured = 0;
 	private String thumbnail;
-	boolean favorite;
+	private boolean favorite;
+	private boolean isSelected;
 	
 	@Override
 	public int compareTo(Object another) {
@@ -88,5 +89,21 @@ public class Streamer implements Comparable<Object>, Serializable {
 
 	public void setThumbnail(String thumbnail) {
 		this.thumbnail = thumbnail;
+	}
+	
+	public void select() {
+		this.isSelected = true;
+	}
+	
+	public void unselect() {
+		this.isSelected = false;
+	}
+	
+	public void toggle() {
+		this.isSelected = !this.isSelected;
+	}
+	
+	public boolean isSelected() {
+		return this.isSelected;
 	}
 }
