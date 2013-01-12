@@ -81,8 +81,6 @@ public class RecentGameAdapter extends UpdatableAdapter {
         for (int i = 0; i < 6; i++) {
         	int image = game.getItem(i);
             holder.items[i].setImageResource(image);
-            if (image == R.drawable.item)
-            	holder.items[i].setAlpha(90);
         }
         
 		return view;

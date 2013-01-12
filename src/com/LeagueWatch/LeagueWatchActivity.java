@@ -1,5 +1,8 @@
 package com.LeagueWatch;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +11,14 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Window;
 
+import com.LeagueWatch.Push.Favorites;
 import com.LeagueWatch.Push.ServerUtilities;
 import com.LeagueWatch.Push.CommonUtilities;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -29,6 +34,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
     StreamGroupAdapter mAdapter;
     ViewPager mPager;
     AsyncTask<Void, Void, Void> mRegisterTask;
+    Timer timer;
     
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -142,8 +148,28 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
         	
         }
         
-        
-		
+	}
+	
+	public void toCallAsynchronous() {
+	    final Handler handler = new Handler();
+	    timer = new Timer();
+	    TimerTask doAsynchronousTask = new TimerTask() {       
+	        @Override
+	        public void run() {
+	            handler.post(new Runnable() {
+	                public void run() {       
+	                    try {
+	                        Favorites favoriteSync = new Favorites();
+	                        // PerformBackgroundTask this class is the class that extends AsynchTask 
+	                        favoriteSync.execute();
+	                    } catch (Exception e) {
+	                        // TODO Auto-generated catch block
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    timer.schedule(doAsynchronousTask, 0, 50000); //execute in every 50000 ms
 	}
 
     public void onStreamerSelected(Streamer selectedStreamer) {
@@ -227,7 +253,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	protected void onResume() {
 		super.onResume();
 		
-		if (findViewById(R.id.fragment_container) != null) {
+		/*if (findViewById(R.id.fragment_container) != null) {
 			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 			if (f != null && f.r != null)
 				f.r.revive();			
@@ -235,7 +261,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.streamer_list_fragment);
 			if (f != null && f.r != null)
 				f.r.revive();
-		}
+		}*/
 		//Log.d("Stream", "Resuming");
 		//Log.d("Stream", "Fragment: " + f);
 		//if (f != null)
@@ -255,7 +281,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	protected void onPause() {
 		super.onPause();
 		
-		if (findViewById(R.id.fragment_container) != null) {
+		/*if (findViewById(R.id.fragment_container) != null) {
 			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 			if (f != null && f.r != null)
 				f.r.killRunnable();			
@@ -263,7 +289,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.streamer_list_fragment);
 			if (f != null && f.r != null)
 				f.r.killRunnable();
-		}
+		}*/
 		//Log.d("Stream", "Pausing");
 		//Log.d("Stream", "Fragment: " + f);
 		//if (f != null)

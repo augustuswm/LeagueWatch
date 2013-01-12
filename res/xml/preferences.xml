@@ -10,13 +10,13 @@
             android:entries="@array/downloadTiming"
             android:entryValues="@array/downloadTimingValues"
             android:defaultValue="300000"/>
-        <ListPreference
+        <!--<ListPreference
             android:key="upload_timing"
             android:title="Sync"
             android:summary="Synchronize favoite streamers every X minutes"
             android:entries="@array/uploadTiming"
             android:entryValues="@array/uploadTimingValues"
-            android:defaultValue="300000"/>
+            android:defaultValue="300000"/>-->
 		<PreferenceScreen
         	android:key="favorites_settings"
         	android:title="Followed streamers"

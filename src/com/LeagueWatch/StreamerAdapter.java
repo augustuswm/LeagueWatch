@@ -6,6 +6,9 @@ import java.util.Collections;
 import com.LeagueWatch.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,7 @@ public class StreamerAdapter extends UpdatableAdapter {
 	LayoutInflater mInflater;
 	private ArrayList<Streamer> database;
 	public StreamerAdapter adapterToUpdate = this;
+    SharedPreferences sharedPref;
 	
 	private class ViewHolder {
 		protected String id;
@@ -36,11 +40,12 @@ public class StreamerAdapter extends UpdatableAdapter {
 
 	public StreamerAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         this.database = new ArrayList<Streamer>();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
         View view = null;
         if (convertView == null) {
             LayoutInflater inflator = mInflater;
@@ -55,37 +60,37 @@ public class StreamerAdapter extends UpdatableAdapter {
             //viewHolder.riot = (ImageView) view.findViewById(R.id.riotfist);
             viewHolder.riot = (ImageView) view.findViewById(R.id.riotfist);
             viewHolder.viewers = (TextView) view.findViewById(R.id.viewers);
-            /*viewHolder.favorite = (CheckBox) view.findViewById(R.id.favorite);
+            viewHolder.favorite = (CheckBox) view.findViewById(R.id.favoriteStream);
             
-            viewHolder.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            if (viewHolder.favorite != null) {
+            	
+            	viewHolder.favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                	
-                    Streamer element = (Streamer) viewHolder.favorite.getTag();
-                    element.favorite = buttonView.isChecked();
-                    Collections.sort(database);
-                    adapterToUpdate.notifyDataSetChanged();
-                    
-                    Log.d("Stream", element.getName() + " favorited.");
-                    
-                    //if (element.id != null) {
-                    //    if (buttonView.isChecked())
-                    //    	Settings.addFavorite(new Long(element.id));
-                    //    else
-                    //    	Settings.removeFavorite(new Long(element.id));
-                    //}
+    	            @Override
+    	            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                }
-            });*/
+    	            	Streamer element = (Streamer) viewHolder.favorite.getTag();
+    	            	Editor e = null;
+    	            	//boolean isFavorite = sharedPref.getBoolean(args.getString("streamer_id"), false);
+    	            	if (element != null)
+    	            		e = sharedPref.edit().putBoolean("~streamer~" + element.getName(), isChecked);
+    	            	if (e != null)
+    	            		e.commit();
+
+    	            }
+    	        });
+    	    }
             
             view.setTag(viewHolder);
-            //viewHolder.favorite.setTag(database.get(position));
+            if (viewHolder.favorite != null)
+            	viewHolder.favorite.setTag(database.get(position));
             
         } else {
         	
-            view = convertView;            
-            //((ViewHolder) view.getTag()).favorite.setTag(database.get(position));
+            view = convertView;
+            ViewHolder temp = ((ViewHolder) view.getTag());
+            if (temp != null && temp.favorite != null)
+            	temp.favorite.setTag(database.get(position));
             
         }
         
@@ -100,6 +105,11 @@ public class StreamerAdapter extends UpdatableAdapter {
         holder.featured.setImageResource(database.get(position).getChampion());
         holder.riot.setVisibility(database.get(position).getFeatured());
         holder.viewers.setText(database.get(position).getViewers() + " - " + database.get(position).getService() + ".tv");
+        
+        if (holder.favorite != null) {
+	    	boolean isFavorite = sharedPref.getBoolean("~streamer~" + database.get(position).getName(), false);
+	    	holder.favorite.setChecked(isFavorite);
+	    }
         
         /*if (database.get(position).isSelected())
         	view.setBackgroundResource(R.drawable.highlight);

@@ -8,75 +8,75 @@
     android:paddingRight="15dip"
     android:paddingTop="5dip"
     tools:context=".Push.archive.RegistrationResultActivity" >
-
+
     <ImageView
         android:id="@+id/championIcon"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/champ_icon_label"
         android:paddingRight="2dip"
         android:src="@drawable/unknown" />
-
+
     <ImageView
         android:id="@+id/item5"
-        android:layout_width="24dip"
-        android:layout_height="24dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/champ_icon_label"
         android:paddingLeft="2dip"
         android:src="@drawable/item" />
-
+
     <ImageView
         android:id="@+id/item4"
-        android:layout_width="24dip"
-        android:layout_height="24dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/item5"
         android:contentDescription="@string/champ_icon_label"
         android:paddingLeft="2dip"
         android:src="@drawable/item" />
-
+
     <ImageView
         android:id="@+id/item3"
-        android:layout_width="24dip"
-        android:layout_height="24dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/item4"
         android:contentDescription="@string/champ_icon_label"
         android:paddingLeft="2dip"
         android:src="@drawable/item" />
-
+
     <ImageView
         android:id="@+id/item2"
-        android:layout_width="24dip"
-        android:layout_height="24dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/item3"
         android:contentDescription="@string/champ_icon_label"
         android:paddingLeft="2dip"
         android:src="@drawable/item" />
-
+
     <ImageView
         android:id="@+id/item1"
-        android:layout_width="24dip"
-        android:layout_height="24dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/item2"
         android:contentDescription="@string/champ_icon_label"
         android:paddingLeft="2dip"
         android:src="@drawable/item" />
-
+
     <ImageView
         android:id="@+id/item0"
-        android:layout_width="24dip"
-        android:layout_height="24dip"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/item1"

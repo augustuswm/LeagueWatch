@@ -19,12 +19,20 @@ package com.LeagueWatch;
 import static com.LeagueWatch.Push.CommonUtilities.SENDER_ID;
 import static com.LeagueWatch.Push.CommonUtilities.displayMessage;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 import com.LeagueWatch.R;
@@ -70,11 +78,37 @@ public class GCMIntentService extends GCMBaseIntentService {
     	  
     	Intent launchIntent = new Intent(context, LeagueWatchActivity.class);
     	PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
-    	  
+    	
+    	String name = streamerName;
+		name = name.replace("_", " ");
+		
+	    Matcher m = Pattern.compile("(m5.benq|4not|crs|tsm|clg|sk|( [a-z])|(^[a-z]))").matcher(name);
+
+	    StringBuilder s = new StringBuilder();
+	    int last = 0;
+	    while (m.find()) {
+	        s.append(name.substring(last, m.start()));
+	        s.append(m.group(0).toUpperCase());
+	        last = m.end();
+	    }
+	    s.append(name.substring(last));
+	    
+	    name = s.toString();
+	    
+	    name = name.replaceAll("( -|\\(.*| \\d{4}\\+?.*|&quot;)", "");
+		
+		if (name.length() > 30)
+			name = name.substring(0,24)+"...";
+    	
+    	String content = name + " started streaming.";
+    	Spannable sb = new SpannableString( content );
+    	sb.setSpan(new ForegroundColorSpan(Color.rgb(215, 215, 215)), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    	
 		builder
 		.setSmallIcon(R.drawable.ic_stat_example)
 		.setContentTitle("Favorite streamer is now online")
-		.setTicker(streamerName + " started streaming.")
+		.setTicker(name + " started streaming.")
+		.setContentText(sb)
 		.setContentIntent(pendingIntent)
 		.setAutoCancel(true);
 		  

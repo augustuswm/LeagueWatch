@@ -30,9 +30,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#312709"
         android:textSize="16sp" />
-
+
     <RelativeLayout
-        android:id="@+id/extras"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
@@ -70,14 +69,5 @@
             android:textSize="12sp" />
         
     </RelativeLayout>
-
-    <CheckBox
-        android:id="@+id/favoriteStream"
-        style="?android:attr/starStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/featured"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/featured" />
 
 </RelativeLayout>

@@ -27,8 +27,8 @@ public class Preferences extends SherlockPreferenceActivity implements OnSharedP
         ListPreference downloadList = (ListPreference)findPreference("download_timing");
         downloadList.setSummary("Update streamer list every " + Integer.parseInt(downloadList.getValue())/60/1000 + " minute" + (Integer.parseInt(downloadList.getValue())/60/1000 > 1 ? "s" : ""));
 		
-		ListPreference uploadList = (ListPreference)findPreference("upload_timing");
-		uploadList.setSummary("Update streamer list every " + Integer.parseInt(uploadList.getValue())/60/1000 + " minute" + (Integer.parseInt(uploadList.getValue())/60/1000 > 1 ? "s" : ""));
+		//ListPreference uploadList = (ListPreference)findPreference("upload_timing");
+		//uploadList.setSummary("Update streamer list every " + Integer.parseInt(uploadList.getValue())/60/1000 + " minute" + (Integer.parseInt(uploadList.getValue())/60/1000 > 1 ? "s" : ""));
         
         PreferenceScreen screen = ((PreferenceScreen)findPreference("favorites_settings"));
         screen.removeAll();
@@ -67,13 +67,13 @@ public class Preferences extends SherlockPreferenceActivity implements OnSharedP
 			list.setSummary("Update streamer list every " + Integer.parseInt(list.getValue())/60/1000 + " minute" + (Integer.parseInt(list.getValue())/60/1000 > 1 ? "s" : ""));
 		}
 		
-		if (key.equals("upload_timing")) {
+		/*if (key.equals("upload_timing")) {
 			ListPreference list = (ListPreference)findPreference(key);
 			if (Integer.parseInt(list.getValue()) > 0)
 				list.setSummary("Synchronize favoite streamers every " + Integer.parseInt(list.getValue())/60/1000 + " minute" + (Integer.parseInt(list.getValue())/60/1000 > 1 ? "s" : ""));
 			else
 				list.setSummary("Synchronizing favorite streamers disabled");
-		}
+		}*/
 		
 		
 		if (key.matches("~streamer~.*")) {

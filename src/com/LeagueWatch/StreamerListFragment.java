@@ -151,4 +151,16 @@ public  class StreamerListFragment extends UpdatableListFragment {
     	else
     		actions.setVisibility(8);*/
     }
+    
+    @Override
+	public void onPause() {
+    	super.onPause();
+    	r.killRunnable();
+    }
+    
+    @Override
+	public void onResume() {
+    	super.onPause();
+    	r.revive();
+    }
 }
