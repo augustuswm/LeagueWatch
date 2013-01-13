@@ -40,11 +40,11 @@ public class Preferences extends SherlockPreferenceActivity implements OnSharedP
         
 		for(Map.Entry<String,?> entry : prefs.entrySet()){
 			//Log.d("Stream", entry.getKey() + ": " + entry.getValue());
-			if (entry.getKey().matches("~streamer~.*") && (Boolean)entry.getValue()) {
+			if (entry.getKey().matches(".*?~streamer~.*") && (Boolean)entry.getValue()) {
 				//Log.d("Stream",entry.getKey() + ": " + entry.getValue().toString());
 				CheckBoxPreference favoriteStreamer = new CheckBoxPreference(this);
 				favoriteStreamer.setKey(entry.getKey());
-				favoriteStreamer.setTitle(entry.getKey().replace("~streamer~", ""));
+				favoriteStreamer.setTitle(entry.getKey().replace(".*?~streamer~", ""));
 				favoriteStreamer.setChecked((Boolean) entry.getValue());
 				
 				streamerCount++;
@@ -76,7 +76,7 @@ public class Preferences extends SherlockPreferenceActivity implements OnSharedP
 		}*/
 		
 		
-		if (key.matches("~streamer~.*")) {
+		if (key.matches(".*?~streamer~.*")) {
 			
 	        PreferenceScreen screen = ((PreferenceScreen)findPreference("favorites_settings"));
 			
@@ -86,7 +86,7 @@ public class Preferences extends SherlockPreferenceActivity implements OnSharedP
 	        
 			for(Map.Entry<String,?> entry : prefs.entrySet()){
 				//Log.d("Stream", "" + entry.getKey() + " : " + entry.getValue());
-				if (entry.getKey().matches("~streamer~.*") && (Boolean)entry.getValue())
+				if (entry.getKey().matches(".*?~streamer~.*") && (Boolean)entry.getValue())
 					streamerCount++;
 			}
 			

@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,7 @@ import android.view.Window;
 import com.LeagueWatch.Push.Favorites;
 import com.LeagueWatch.Push.ServerUtilities;
 import com.LeagueWatch.Push.CommonUtilities;
+import com.LeagueWatch.StreamerListFragment.Updater;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -34,7 +36,10 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
     StreamGroupAdapter mAdapter;
     ViewPager mPager;
     AsyncTask<Void, Void, Void> mRegisterTask;
-    Timer timer;
+
+	public Handler updateHandler;
+	
+	Updater r = null;
     
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -50,7 +55,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
         GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set - comment out this line
         // while developing the app, then uncomment it when it's ready.
-        GCMRegistrar.checkManifest(this);
+        //GCMRegistrar.checkManifest(this);
         //mDisplay = (TextView) findViewById(R.id.display);
         registerReceiver(mHandleMessageReceiver, new IntentFilter(CommonUtilities.DISPLAY_MESSAGE_ACTION));
         final String regId = GCMRegistrar.getRegistrationId(this);
@@ -147,31 +152,85 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             transaction.commit();
         	
         }
-        
-	}
-	
-	public void toCallAsynchronous() {
-	    final Handler handler = new Handler();
-	    timer = new Timer();
-	    TimerTask doAsynchronousTask = new TimerTask() {       
+
+	    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	    
+	    r = new Updater() {
+
+	    	@Override
+			public void run() {
+                Log.d("Stream", "\nRunning sync");
+	    		try {
+	                Favorites favoriteSync = new Favorites(regId, sharedPref);
+	                // PerformBackgroundTask this class is the class that extends AsynchTask 
+	                favoriteSync.execute();
+	            } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	            }
+	    		
+	    		String downloadTimingPref = sharedPref.getString(Preferences.KEY_PREF_DOWNLOAD_TIMING, "");
+				int timeout = !downloadTimingPref.equals("") ? Integer.parseInt(downloadTimingPref) : 60000;
+		    	Message msg;
+		    	msg = Message.obtain();
+		    	msg.obj = true;
+		    	updateHandler.sendMessage(msg);
+		    	updateHandler.postDelayed(this, 10000);
+			}
+	    	
+	    	@Override
+			public void killRunnable() {
+				updateHandler.removeCallbacks(this);
+				this.killMe = true;
+			}
+	    	
+	    	@Override
+			public void revive() {
+				updateHandler.post(this);
+				this.killMe = false;
+			}
+	    	
+	    	@Override
+			public boolean isKilled() {
+				return this.killMe;
+			}
+	    };
+	    
+	    updateHandler = new Handler() {
 	        @Override
-	        public void run() {
-	            handler.post(new Runnable() {
-	                public void run() {       
-	                    try {
-	                        Favorites favoriteSync = new Favorites();
-	                        // PerformBackgroundTask this class is the class that extends AsynchTask 
-	                        favoriteSync.execute();
-	                    } catch (Exception e) {
-	                        // TODO Auto-generated catch block
-	                    }
-	                }
-	            });
+	        public void handleMessage(Message msg) {
+	        	//Log.d("Stream", "Handling Message");
+	        	///if (getActivity() != null) {
+	    	    	//updateDataSource(getActivity());
+				    
+				    /*NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+				    Notification.Builder builder = new Notification.Builder(getActivity()).setContentTitle("New mail from").setContentText("Subject").setSmallIcon(R.drawable.ahri);
+				    Notification noti = builder.getNotification();
+				    notificationManager.notify(1, noti);*/
+	        	//} else {
+	        		//r.killRunnable();
+	        	//}
 	        }
 	    };
-	    timer.schedule(doAsynchronousTask, 0, 50000); //execute in every 50000 ms
 	}
+	
+	private class Updater implements Runnable {
+    	protected boolean killMe = false;
 
+    	@Override
+		public void run() {		
+		}
+
+		public void killRunnable() {
+		}
+
+		public void revive() {
+		}
+		
+		public boolean isKilled() {
+			return killMe;
+		}
+    }
+	
     public void onStreamerSelected(Streamer selectedStreamer) {
     	
         // The user selected the headline of an article from the HeadlinesFragment
@@ -253,6 +312,9 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	protected void onResume() {
 		super.onResume();
 		
+		if (r != null)
+			r.revive();
+		
 		/*if (findViewById(R.id.fragment_container) != null) {
 			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 			if (f != null && f.r != null)
@@ -280,6 +342,9 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
+		if (r != null)
+			r.killRunnable();
 		
 		/*if (findViewById(R.id.fragment_container) != null) {
 			f = (StreamerListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);

@@ -34,7 +34,7 @@ public class FetchStream {
 		return null;
 	}
 	
-	protected String getJSON() {
+	public String getJSON() {
 		
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();

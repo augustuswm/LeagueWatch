@@ -73,7 +73,7 @@ public class StreamerAdapter extends UpdatableAdapter {
     	            	Editor e = null;
     	            	//boolean isFavorite = sharedPref.getBoolean(args.getString("streamer_id"), false);
     	            	if (element != null)
-    	            		e = sharedPref.edit().putBoolean("~streamer~" + element.getName(), isChecked);
+    	            		e = sharedPref.edit().putBoolean(element.getId() + "~streamer~" + element.getName(), isChecked);
     	            	if (e != null)
     	            		e.commit();
 
@@ -107,7 +107,7 @@ public class StreamerAdapter extends UpdatableAdapter {
         holder.viewers.setText(database.get(position).getViewers() + " - " + database.get(position).getService() + ".tv");
         
         if (holder.favorite != null) {
-	    	boolean isFavorite = sharedPref.getBoolean("~streamer~" + database.get(position).getName(), false);
+	    	boolean isFavorite = sharedPref.getBoolean(database.get(position).getId() + "~streamer~" + database.get(position).getName(), false);
 	    	holder.favorite.setChecked(isFavorite);
 	    }
         

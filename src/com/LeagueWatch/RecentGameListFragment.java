@@ -52,7 +52,7 @@ public class RecentGameListFragment extends UpdatableListFragment {
     		((TextView)playerControls.findViewById(R.id.playerName)).setText(args.getString("name"));
         	
     		// Check to see if this is a favorite streamer
-        	boolean isFavorite = sharedPref.getBoolean("~streamer~" + args.getString("name"), false);
+        	boolean isFavorite = sharedPref.getBoolean(args.getString("streamer_id") + "~streamer~" + args.getString("name"), false);
     		
     		CheckBox favoriteBox = (CheckBox) (playerControls.findViewById(R.id.favorite));
     		favoriteBox.setChecked(isFavorite);
@@ -64,7 +64,7 @@ public class RecentGameListFragment extends UpdatableListFragment {
 	            	
 	            	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 	            	//boolean isFavorite = sharedPref.getBoolean(args.getString("streamer_id"), false);
-	            	Editor e = pref.edit().putBoolean("~streamer~" + args.getString("name"), isChecked);
+	            	Editor e = pref.edit().putBoolean(args.getString("streamer_id") + "~streamer~" + args.getString("name"), isChecked);
 	            	e.commit();
 	            		            	
 	                /*Streamer element = (Streamer) viewHolder.favorite.getTag();
