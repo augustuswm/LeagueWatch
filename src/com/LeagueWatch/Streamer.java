@@ -6,6 +6,7 @@ public class Streamer implements Comparable<Object>, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
+	private String streamName;
 	private String id;
 	private int viewers;
 	private int champion;
@@ -38,6 +39,14 @@ public class Streamer implements Comparable<Object>, Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getStreamName() {
+		return streamName;
+	}
+
+	public void setStreamName(String streamName) {
+		this.streamName = streamName;
 	}
 
 	public int getViewers() {
@@ -105,5 +114,13 @@ public class Streamer implements Comparable<Object>, Serializable {
 	
 	public boolean isSelected() {
 		return this.isSelected;
+	}
+	
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
 	}
 }

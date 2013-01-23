@@ -14,6 +14,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.NotificationCompat;
@@ -50,7 +51,7 @@ public class DatabaseUpdater extends AsyncTask<Void, Void, ArrayList<Streamer>> 
 	protected ArrayList<Streamer> doInBackground(Void... params) {
 		running = true;
 		
-		LeagueWatch t = new LeagueWatch();
+		LeagueWatch t = new LeagueWatch(PreferenceManager.getDefaultSharedPreferences(activity));
 		ArrayList<Streamer> s = t.fetch(fetchArg);
 		Collections.sort(s);
 		

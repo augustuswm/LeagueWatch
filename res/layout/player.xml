@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/playerView"
+<RelativeLayout android:id="@+id/playerView"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical" >
-
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="fill_parent"
         android:layout_height="250dp"
         android:adjustViewBounds="true"
+        android:background="#000000"
         android:baselineAlignBottom="false"
         android:contentDescription="@string/stream_preview"
         android:scaleType="centerCrop" />
-
+
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/profileImage" >
-
+
         <TextView
             android:id="@+id/playerName"
             android:layout_width="match_parent"
@@ -28,18 +29,17 @@
             android:padding="15dip"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#ffffff" />
-
-<CheckBox
-    android:id="@+id/favorite"
-    style="?android:attr/starStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentRight="true"
-    android:layout_centerVertical="true"
-    android:layout_marginRight="15dip" />
 
+        <CheckBox
+            android:id="@+id/favorite"
+            style="?android:attr/starStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip" />
     </RelativeLayout>
-
+
     <TextView
         android:id="@+id/recentlyPlayedTitle"
         android:layout_width="wrap_content"
@@ -51,5 +51,15 @@
         android:paddingTop="10dip"
         android:text="@string/recently_played"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout1"
+        android:layout_alignBottom="@+id/playerName"
+        android:layout_alignTop="@+id/profileImage"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/leaguewatchplay_128" />
 
 </RelativeLayout>

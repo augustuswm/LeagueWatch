@@ -27,57 +27,49 @@
         android:clickable="false"
         android:gravity="bottom"
         android:longClickable="false"
+        android:text="Name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#312709"
         android:textSize="16sp" />
-
-    <RelativeLayout
-        android:id="@+id/extras"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:layout_marginLeft="48dip" >
-
-        <TextView
-            android:id="@+id/playing"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/viewers"
-            android:clickable="false"
-            android:longClickable="false"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#1d5999"
-            android:textSize="12sp" />
-
-        <ImageView
-            android:id="@+id/riotfist"
-            android:layout_width="16dip"
-            android:layout_height="16dip"
-            android:layout_marginRight="5dip"
-            android:contentDescription="@string/riot_badge"
-            android:src="@drawable/riotfist"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/viewers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/riotfist"
-            android:clickable="false"
-            android:longClickable="false"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#666666"
-            android:textSize="12sp" />
-        
-    </RelativeLayout>
-
+
     <CheckBox
-        android:id="@+id/favoriteStream"
+        android:id="@+id/favoriteStreamCheckBox"
         style="?android:attr/starStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/featured"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/featured" />
+        android:layout_alignTop="@+id/featured"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:selectAllOnFocus="false" />
+
+    <TextView
+        android:id="@+id/viewers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/featured"
+        android:clickable="false"
+        android:gravity="bottom"
+        android:longClickable="false"
+        android:text="Viewers"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#666666"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/playing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewers"
+        android:layout_toRightOf="@+id/featured"
+        android:clickable="false"
+        android:gravity="bottom"
+        android:longClickable="false"
+        android:text="Playing"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#1d5999"
+        android:textSize="12sp" />
 
 </RelativeLayout>

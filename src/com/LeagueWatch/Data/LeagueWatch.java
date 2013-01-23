@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.LeagueWatch.R;
@@ -17,9 +18,11 @@ import com.LeagueWatch.Streamer;
 public class LeagueWatch extends FetchStream {
 	
 	private LoLDatabase LoLDB = new LoLDatabase();
+	private SharedPreferences pref;
 	
-	public LeagueWatch() {
+	public LeagueWatch(SharedPreferences pref) {
 		super();
+		this.pref = pref;
 	}
 	
 	@Override
@@ -103,8 +106,9 @@ public class LeagueWatch extends FetchStream {
 				try {
 					Streamer s = new Streamer();
 					
-					s.setId(jsonObject.getString("pk").substring(0,jsonObject.getString("pk").indexOf("_")));
+					s.setId(jsonObject.getString("pk"));
 					s.setViewers(channel.getInt("viewers"));
+					s.setStreamName(channel.getString("name"));
 					
 					String name = channel.getString("name");
 					name = name.replace("_", " ");
@@ -139,6 +143,8 @@ public class LeagueWatch extends FetchStream {
 					s.setFeatured(channel.getInt("featured"));
 					
 					s.setThumbnail(channel.getString("thumbnail"));
+					
+					s.setFavorite(pref.getBoolean(s.getId() + "~streamer~" + s.getName(), false));
 							
 					db.add(s);
 					

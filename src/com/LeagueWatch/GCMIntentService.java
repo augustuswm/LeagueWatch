@@ -27,7 +27,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -70,18 +73,12 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.i(TAG, "Received message");
         //String message = getString(R.string.gcm_message);
         //displayMessage(context, message);
-    	
+
         String streamerName = intent.getStringExtra("streamer_name");
-        
-    	NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-    	NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-    	  
-    	Intent launchIntent = new Intent(context, LeagueWatchActivity.class);
-    	PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
-    	
+
     	String name = streamerName;
 		name = name.replace("_", " ");
-		
+
 	    Matcher m = Pattern.compile("(m5.benq|4not|crs|tsm|clg|sk|( [a-z])|(^[a-z]))").matcher(name);
 
 	    StringBuilder s = new StringBuilder();
@@ -92,27 +89,56 @@ public class GCMIntentService extends GCMBaseIntentService {
 	        last = m.end();
 	    }
 	    s.append(name.substring(last));
-	    
+
 	    name = s.toString();
-	    
+
 	    name = name.replaceAll("( -|\\(.*| \\d{4}\\+?.*|&quot;)", "");
-		
+
 		if (name.length() > 30)
 			name = name.substring(0,24)+"...";
+
+    	Intent launchIntent = new Intent(context, LeagueWatchActivity.class);
+    	launchIntent.putExtra("clearPending", true);
+    	PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
     	
-    	String content = name + " started streaming.";
-    	Spannable sb = new SpannableString( content );
-    	sb.setSpan(new ForegroundColorSpan(Color.rgb(215, 215, 215)), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    	SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+    	String pendingNotificationsString = sharedPref.getString("pendingNotifications", "");
+    	pendingNotificationsString = pendingNotificationsString + "~" + name;
     	
-		builder
-		.setSmallIcon(R.drawable.ic_stat_example)
-		.setContentTitle("Favorite streamer is now online")
-		.setTicker(name + " started streaming.")
-		.setContentText(sb)
-		.setContentIntent(pendingIntent)
-		.setAutoCancel(true);
-		  
-		notificationManager.notify(435147, builder.build());
+    	Editor editor = sharedPref.edit();
+    	editor.putString("pendingNotifications", pendingNotificationsString);
+    	editor.commit();
+    	
+    	String[] pendingNotifications = pendingNotificationsString.split("~");
+
+    	NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+    	//NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+    	    	
+    	NotificationCompat.InboxStyle noti = new NotificationCompat.InboxStyle(
+    		      new NotificationCompat.Builder(context)
+    		         .setContentTitle("Favorite streamer is now online")
+    		         .setContentText("")
+    		         .setSmallIcon(R.drawable.ic_stat_example)
+    		         .setContentIntent(pendingIntent));
+    	
+    	for (int i = pendingNotifications.length - 1; i >= 0; i--) {
+    		if (!pendingNotifications[i].equals("")) {
+	        	String content = pendingNotifications[i] + " started streaming.";
+	        	Spannable sb = new SpannableString( content );
+	        	sb.setSpan(new ForegroundColorSpan(Color.rgb(215, 215, 215)), 0, pendingNotifications[i].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	        	
+	    		noti.addLine(sb);
+    		}
+    	}
+    	
+    	noti.setBigContentTitle("Favorite streamer is now online")
+    		.setSummaryText("+3 more");
+
+		//notificationManager.notify(435147, builder.build());
+		notificationManager.notify(435147, noti.build());
+		
+		
+		
     }
 
     @Override

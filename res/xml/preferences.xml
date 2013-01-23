@@ -3,13 +3,22 @@
         android:key="leaguewatch_settings"
         android:title="Settings"
         android:persistent="false">
-        <ListPreference
-            android:key="download_timing"
-            android:title="Updates"
-            android:summary="Update streamer list every 1 minute"
-            android:entries="@array/downloadTiming"
-            android:entryValues="@array/downloadTimingValues"
-            android:defaultValue="300000"/>
+        <PreferenceCategory android:title="General">
+	        <ListPreference
+	            android:key="download_timing"
+	            android:title="Updates"
+	            android:summary="Update streamer list every 1 minute"
+	            android:entries="@array/downloadTiming"
+	            android:entryValues="@array/downloadTimingValues"
+	            android:defaultValue="300000"
+	        	android:persistent="true"/>
+            <CheckBoxPreference
+				android:title="Stream Playback"
+				android:defaultValue="true"
+				android:summary="Enable play stream button on streamers page"
+				android:key="opt_in_video"
+	        	android:persistent="true" />	                    
+        </PreferenceCategory>
         <!--<ListPreference
             android:key="upload_timing"
             android:title="Sync"
@@ -17,10 +26,27 @@
             android:entries="@array/uploadTiming"
             android:entryValues="@array/uploadTimingValues"
             android:defaultValue="300000"/>-->
-		<PreferenceScreen
-        	android:key="favorites_settings"
-        	android:title="Followed streamers"
-            android:summary="Following X streamers"
-        	android:persistent="false">
-		</PreferenceScreen>
+        <PreferenceCategory android:title="Notifications">
+            <CheckBoxPreference
+				android:title="Notify"
+				android:defaultValue="true"
+				android:summary="Notify when a favorite starts streaming"
+				android:key="notify"
+	        	android:persistent="true" />
+            <RingtonePreference
+	            android:key="notify_tone"
+	            android:dependency="notify"
+	            android:title="Notification Sound"
+	            android:ringtoneType="notification"
+	            android:showDefault="true"
+	            android:shouldDisableView="true"
+	            android:summary="How you get notified"
+	        	android:persistent="true" />
+			<PreferenceScreen
+	        	android:key="favorites_settings"
+	        	android:title="Followed streamers"
+	            android:summary="Following X streamers"
+	        	android:persistent="true">
+			</PreferenceScreen>            
+        </PreferenceCategory>
 </PreferenceScreen>

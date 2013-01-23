@@ -47,6 +47,14 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (getIntent() != null) {
+			boolean clearPending = getIntent().getBooleanExtra("clearPending", false);
+			
+			if (clearPending) {
+				clearPendingNotifications();
+			}
+		}
     	//GCMRegistrar.unregister(getApplicationContext());
 		
 		checkNotNull(CommonUtilities.SERVER_URL, "SERVER_URL");
@@ -154,6 +162,9 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
         }
 
 	    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	    //Editor editor = sharedPref.edit();
+	    //editor.clear();
+	    //editor.commit();
 	    
 	    r = new Updater() {
 
@@ -174,7 +185,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 		    	msg = Message.obtain();
 		    	msg.obj = true;
 		    	updateHandler.sendMessage(msg);
-		    	updateHandler.postDelayed(this, 10000);
+		    	updateHandler.postDelayed(this, timeout);
 			}
 	    	
 	    	@Override
@@ -244,10 +255,11 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 
     		RecentGameListFragment recentGames = new RecentGameListFragment();
             Bundle args = new Bundle();
-            String suffix = selectedStreamer.getService() == "Twitch" ? "_t" : "_o";
-            args.putString("streamer_id", selectedStreamer.getId() + suffix);
+            args.putString("streamer_id", selectedStreamer.getId());
             args.putString("name", selectedStreamer.getName());
+            args.putString("streamName", selectedStreamer.getStreamName());
             args.putString("thumbnail", selectedStreamer.getThumbnail());
+            args.putString("service", selectedStreamer.getService());
             recentGames.setArguments(args);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -266,10 +278,11 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
         	
         	RecentGameListFragment recentGames = new RecentGameListFragment();
             Bundle args = new Bundle();
-            String suffix = selectedStreamer.getService() == "Twitch" ? "_t" : "_o";
-            args.putString("streamer_id", selectedStreamer.getId() + suffix);
+            args.putString("streamer_id", selectedStreamer.getId());
             args.putString("name", selectedStreamer.getName());
+            args.putString("streamName", selectedStreamer.getStreamName());
             args.putString("thumbnail", selectedStreamer.getThumbnail());
+            args.putString("service", selectedStreamer.getService());
             recentGames.setArguments(args);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -299,6 +312,18 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             	Intent intent = new Intent(this, Preferences.class);
                 startActivity(intent);
                 return true;
+            case R.id.Register:
+            	register();
+                return true;
+            case R.id.Unregister:
+            	unregister();
+                return true;
+            case R.id.ClearPref:
+            	clearPreferences();
+                return true;
+            case R.id.ClearPending:
+            	clearPendingNotifications();
+                return true;
             case R.id.Feedback:
                 return true;
             case R.id.About:
@@ -306,6 +331,71 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public void clearPreferences() {
+    	SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);    	
+    	Editor editor = sharedPref.edit();
+    	editor.clear();
+    	editor.commit();    	
+    }
+    
+    public void clearPendingNotifications() {
+    	SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);    	
+    	Editor editor = sharedPref.edit();
+    	editor.remove("pendingNotifications");
+    	editor.commit();
+    }
+    
+    public void register() {
+    	checkNotNull(CommonUtilities.SERVER_URL, "SERVER_URL");
+        checkNotNull(CommonUtilities.SENDER_ID, "SERVER_ID");
+        // Make sure the device has the proper dependencies.
+        GCMRegistrar.checkDevice(this);
+        // Make sure the manifest was properly set - comment out this line
+        // while developing the app, then uncomment it when it's ready.
+        //GCMRegistrar.checkManifest(this);
+        //mDisplay = (TextView) findViewById(R.id.display);
+        registerReceiver(mHandleMessageReceiver, new IntentFilter(CommonUtilities.DISPLAY_MESSAGE_ACTION));
+        final String regId = GCMRegistrar.getRegistrationId(this);
+        if (regId.equals("")) {
+            // Automatically registers application on startup.
+        	//Log.d("Stream", "Register this device");
+        	GCMRegistrar.register(this, CommonUtilities.SENDER_ID);
+        } else {
+            // Device is already registered on GCM, check server.
+            if (GCMRegistrar.isRegisteredOnServer(this)) {
+            	//GCMRegistrar.
+                // Skips registration.
+            	//Log.d("Stream", "Already registered");
+                //mDisplay.append(getString(R.string.already_registered) + "\n");
+            } else {
+                // Try to register again, but not in the UI thread.
+                // It's also necessary to cancel the thread onDestroy(),
+                // hence the use of AsyncTask instead of a raw thread.
+                //Log.d("Stream", "Register this device again");
+                final Context context = this;
+                mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        ServerUtilities.register(context, regId);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        mRegisterTask = null;
+                    }
+
+                };
+                mRegisterTask.execute(null, null, null);
+            }
+        }
+    }
+    
+    public void unregister() {
+    	GCMRegistrar.unregister(this);
     }
 	
 	@Override
