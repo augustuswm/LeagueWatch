@@ -1,8 +1,5 @@
 package com.LeagueWatch;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,20 +11,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Window;
 
+import com.LeagueWatch.Push.CommonUtilities;
 import com.LeagueWatch.Push.Favorites;
 import com.LeagueWatch.Push.ServerUtilities;
-import com.LeagueWatch.Push.CommonUtilities;
-import com.LeagueWatch.StreamerListFragment.Updater;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
 import com.google.android.gcm.GCMRegistrar;
 
 public class LeagueWatchActivity extends SherlockFragmentActivity implements StreamerListFragment.OnItemSelectedListener {
@@ -147,16 +143,9 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.streamer_list_fragment, f).commit();     	
             
-
-    		RecentGameListFragment recentGames = new RecentGameListFragment();
-            Bundle args = new Bundle();
-            String suffix = "_t";
-            args.putString("streamer_id", "00000" + suffix);
-            args.putString("name", "First Pane");
-            args.putString("thumbnail", "");
-            recentGames.setArguments(args);
+            WelcomeFragment welcome = new WelcomeFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.recent_games_list_fragment, recentGames);
+            transaction.add(R.id.recent_games_list_fragment, welcome);
             transaction.commit();
         	
         }
@@ -242,12 +231,13 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
 		}
     }
 	
-    public void onStreamerSelected(Streamer selectedStreamer) {
+    @Override
+	public void onStreamerSelected(Streamer selectedStreamer) {
     	
         // The user selected the headline of an article from the HeadlinesFragment
 
         // Capture the article fragment from the activity layout
-    	RecentGameListFragment playerFrag = (RecentGameListFragment)getSupportFragmentManager().findFragmentById(R.id.recent_games_list_fragment);
+    	Fragment playerFrag = getSupportFragmentManager().findFragmentById(R.id.recent_games_list_fragment);
     	
         //if (articleFrag != null) {
     	if (playerFrag != null) {
@@ -296,6 +286,45 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
         	
         }
     }
+    
+    public void showWelcome() {
+    	Fragment playerFrag = getSupportFragmentManager().findFragmentById(R.id.recent_games_list_fragment);
+	
+	    //if (articleFrag != null) {
+		if (playerFrag != null) {
+	        // If article frag is available, we're in two-pane layout...
+	
+			WelcomeFragment welcome = new WelcomeFragment();
+	        Bundle args = new Bundle();
+	        welcome.setArguments(args);
+	        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+	
+	        // Replace whatever is in the fragment_container view with this fragment,
+	        // and add the transaction to the back stack so the user can navigate back
+	        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+	        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+	        transaction.replace(R.id.recent_games_list_fragment, welcome);
+	        //transaction.addToBackStack(null);
+	        transaction.commit();
+			
+	    } else {
+	        // If the frag is not available, we're in the one-pane layout and must swap frags...
+	    		    	
+	    	WelcomeFragment welcome = new WelcomeFragment();
+	        Bundle args = new Bundle();
+	        welcome.setArguments(args);
+	        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+	
+	        // Replace whatever is in the fragment_container view with this fragment,
+	        // and add the transaction to the back stack so the user can navigate back
+	        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+	        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+	        transaction.replace(R.id.fragment_container, welcome);
+	        transaction.addToBackStack(null);
+	        transaction.commit();
+	    	
+	    }    	
+    }
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -312,7 +341,7 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             	Intent intent = new Intent(this, Preferences.class);
                 startActivity(intent);
                 return true;
-            case R.id.Register:
+            /*case R.id.Register:
             	register();
                 return true;
             case R.id.Unregister:
@@ -325,8 +354,9 @@ public class LeagueWatchActivity extends SherlockFragmentActivity implements Str
             	clearPendingNotifications();
                 return true;
             case R.id.Feedback:
-                return true;
+                return true;*/
             case R.id.About:
+            	showWelcome();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

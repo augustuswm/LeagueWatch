@@ -4,18 +4,13 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class RecentGameAdapter extends UpdatableAdapter {
@@ -72,7 +67,7 @@ public class RecentGameAdapter extends UpdatableAdapter {
         else
         	fcs = new ForegroundColorSpan(Color.rgb(200, 0, 0));        	
 
-        sb.setSpan(fcs, sb.length() - game.isWinAsString().length(), sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
+        sb.setSpan(fcs, sb.length() - game.isWinAsString().length(), sb.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE); 
 
         holder.score.setText(sb);
         
@@ -102,8 +97,9 @@ public class RecentGameAdapter extends UpdatableAdapter {
 		return 0;
 	}
 	
+	@Override
 	public void setDatabase(ArrayList database) {
-		this.database = (ArrayList<RecentGame>)database;
+		this.database = database;
 	}
 	
 	

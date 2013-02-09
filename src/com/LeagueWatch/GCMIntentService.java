@@ -22,7 +22,6 @@ import static com.LeagueWatch.Push.CommonUtilities.displayMessage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,15 +29,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 
-import com.LeagueWatch.R;
 import com.LeagueWatch.Push.ServerUtilities;
 import com.google.android.gcm.GCMBaseIntentService;
 
@@ -113,31 +114,57 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     	NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
     	//NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-    	    	
-    	NotificationCompat.InboxStyle noti = new NotificationCompat.InboxStyle(
-    		      new NotificationCompat.Builder(context)
-    		         .setContentTitle("Favorite streamer is now online")
-    		         .setContentText("")
-    		         .setSmallIcon(R.drawable.ic_stat_example)
-    		         .setContentIntent(pendingIntent));
     	
-    	for (int i = pendingNotifications.length - 1; i >= 0; i--) {
-    		if (!pendingNotifications[i].equals("")) {
-	        	String content = pendingNotifications[i] + " started streaming.";
-	        	Spannable sb = new SpannableString( content );
-	        	sb.setSpan(new ForegroundColorSpan(Color.rgb(215, 215, 215)), 0, pendingNotifications[i].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	        	
-	    		noti.addLine(sb);
-    		}
-    	}
+    	Uri ringtoneUri = null;
     	
-    	noti.setBigContentTitle("Favorite streamer is now online")
-    		.setSummaryText("+3 more");
+    	String strRingtonePreference = sharedPref.getString("notify_tone", "DEFAULT_SOUND");
+        if (!strRingtonePreference.equals(""))
+            ringtoneUri = Uri.parse(strRingtonePreference);
+    	
+        if (Build.VERSION.SDK_INT >= 16) {
+	        Builder notiBuilder = new NotificationCompat.Builder(context)
+							        .setContentTitle("Favorite streamer is now online")
+							        .setContentText("")
+							        .setSmallIcon(R.drawable.ic_stat_example)
+							        .setContentIntent(pendingIntent)
+							        .setAutoCancel(true);
+	        
+	        if (ringtoneUri != null)
+	        	notiBuilder.setSound(ringtoneUri);
+	        
+	    	NotificationCompat.InboxStyle noti = new NotificationCompat.InboxStyle(notiBuilder);
+	    	
+	    	for (int i = pendingNotifications.length - 1; i >= 0; i--) {
+	    		if (!pendingNotifications[i].equals("")) {
+		        	String content = pendingNotifications[i] + " started streaming.";
+		        	Spannable sb = new SpannableString( content );
+		        	sb.setSpan(new ForegroundColorSpan(Color.rgb(215, 215, 215)), 0, pendingNotifications[i].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		        	
+		    		noti.addLine(sb);
+	    		}
+	    	}
+	    	
+	    	noti.setBigContentTitle("Favorite streamer is now online");
+	
+			//notificationManager.notify(435147, builder.build());
+			notificationManager.notify(435147, noti.build());
+		
+        } else { // Pre-Jelly Bean
+        	
 
-		//notificationManager.notify(435147, builder.build());
-		notificationManager.notify(435147, noti.build());
-		
-		
+	        Builder notiBuilder = new NotificationCompat.Builder(context)
+							        .setContentTitle("Favorite streamer is now online")
+							        .setContentText(pendingNotifications[pendingNotifications.length - 1] + " started streaming.")
+							        .setSmallIcon(R.drawable.ic_stat_example)
+							        .setContentIntent(pendingIntent)
+							        .setAutoCancel(true);
+	        
+	        if (ringtoneUri != null)
+	        	notiBuilder.setSound(ringtoneUri);
+	        
+	        notificationManager.notify(435147, notiBuilder.build());
+        	
+        }
 		
     }
 

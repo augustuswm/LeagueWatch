@@ -33,4 +33,7 @@
     <drawable name="photoNameBackground">#c0042847</drawable>
     <color name="white">#FFFFFFFF</color>
     <drawable name="black">#00000000</drawable>
+    <color name="summaryGray">#333333</color>
+    <color name="logogray">#cccccc</color>
+    <color name="viewers">#666666</color>
 </resources>

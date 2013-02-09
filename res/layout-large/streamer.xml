@@ -17,7 +17,6 @@
         android:contentDescription="@string/champ_icon_label"
         android:longClickable="false"
         android:paddingRight="5dip" />
-
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -31,8 +30,7 @@
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#312709"
-        android:textSize="16sp" />
-
+        android:textSize="16sp"/>
     <TextView
         android:id="@+id/viewers"
         android:layout_width="wrap_content"
@@ -46,8 +44,7 @@
         android:text="Viewers"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#666666"
-        android:textSize="12sp" />
-
+        android:textSize="12sp"/>
     <TextView
         android:id="@+id/playing"
         android:layout_width="wrap_content"

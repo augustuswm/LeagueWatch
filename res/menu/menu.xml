@@ -3,11 +3,11 @@
     <item android:id="@+id/overflow" android:title="Overflow" android:enabled="true" android:visible="true" android:showAsAction="always" android:icon="@drawable/ic_menu_moreoverflow_holo_dark">
         <menu>
             <item android:id="@+id/Settings" android:title="Settings"/>
-            <item android:id="@+id/Register" android:title="Register"/>
+            <!-- item android:id="@+id/Register" android:title="Register"/>
             <item android:id="@+id/Unregister" android:title="Unregister"/>
             <item android:id="@+id/ClearPref" android:title="Clear Prefs"/>
             <item android:id="@+id/ClearPending" android:title="Clear Pending"/>
-            <item android:id="@+id/Feedback" android:title="Feedback"/>
+            <item android:id="@+id/Feedback" android:title="Feedback"/>-->
             <item android:id="@+id/About" android:title="About"/>
         </menu>
     </item>

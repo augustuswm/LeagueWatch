@@ -1,29 +1,19 @@
 package com.LeagueWatch;
 
-import java.util.ArrayList;
-
-import com.LeagueWatch.Data.DatabaseUpdater;
-import com.actionbarsherlock.app.SherlockListFragment;
-
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.LeagueWatch.Data.DatabaseUpdater;
 
 public  class StreamerListFragment extends UpdatableListFragment {
 
@@ -128,7 +118,8 @@ public  class StreamerListFragment extends UpdatableListFragment {
         }
     }
     
-    public DatabaseUpdater updateDataSource(FragmentActivity activity) {
+    @Override
+	public DatabaseUpdater updateDataSource(FragmentActivity activity) {
     	DatabaseUpdater dbUpdater = new DatabaseUpdater(this, activity);
     	dbUpdater.updateFragment(null);
     	

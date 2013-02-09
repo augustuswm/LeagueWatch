@@ -1,7 +1,6 @@
 package com.LeagueWatch;
 
 import android.support.v4.app.FragmentActivity;
-import android.widget.ListAdapter;
 
 import com.LeagueWatch.Data.DatabaseUpdater;
 import com.actionbarsherlock.app.SherlockListFragment;

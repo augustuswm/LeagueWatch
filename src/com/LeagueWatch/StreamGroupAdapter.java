@@ -1,15 +1,11 @@
 package com.LeagueWatch;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 
 public class StreamGroupAdapter extends FragmentPagerAdapter {
@@ -60,6 +56,7 @@ public class StreamGroupAdapter extends FragmentPagerAdapter {
     	//return fragments.get(Integer.valueOf(position));
 	}
 
+	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
 	    super.destroyItem(container, position, object);
 	    fragments.remove(position);
@@ -81,7 +78,7 @@ public class StreamGroupAdapter extends FragmentPagerAdapter {
     }
     
     public StreamerListFragment getFragment(int key) {
-        return (StreamerListFragment) fragments.get(key);
+        return fragments.get(key);
     }
 
 }

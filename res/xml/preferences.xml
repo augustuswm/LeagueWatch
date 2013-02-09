@@ -2,8 +2,8 @@
 <PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="leaguewatch_settings"
         android:title="Settings"
-        android:persistent="false">
-        <PreferenceCategory android:title="General">
+        android:persistent="true">
+        <PreferenceCategory android:title="General" android:key="general_options">
 	        <ListPreference
 	            android:key="download_timing"
 	            android:title="Updates"
@@ -42,7 +42,7 @@
 	            android:shouldDisableView="true"
 	            android:summary="How you get notified"
 	        	android:persistent="true" />
-			<PreferenceScreen
+			<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
 	        	android:key="favorites_settings"
 	        	android:title="Followed streamers"
 	            android:summary="Following X streamers"

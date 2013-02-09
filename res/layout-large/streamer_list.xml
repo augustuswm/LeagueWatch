@@ -3,8 +3,8 @@
     android:id="@+id/streamers"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/streamer_list_background" >
-
+    android:background="@drawable/streamer_list_background">
+    
 	<ListView
 	    android:id="@+id/android:list"
 	    android:layout_width="fill_parent"

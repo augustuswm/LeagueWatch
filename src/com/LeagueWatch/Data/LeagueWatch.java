@@ -1,7 +1,6 @@
 package com.LeagueWatch.Data;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.LeagueWatch.R;
 import com.LeagueWatch.RecentGame;

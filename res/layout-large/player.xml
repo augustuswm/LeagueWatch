@@ -51,7 +51,7 @@
         android:paddingTop="10dip"
         android:text="@string/recently_played"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+    
     <ImageView
         android:id="@+id/playButton"
         android:layout_width="wrap_content"

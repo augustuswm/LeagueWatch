@@ -3,20 +3,15 @@ package com.LeagueWatch;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.LeagueWatch.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -145,8 +140,9 @@ public class StreamerAdapter extends UpdatableAdapter {
 		return 0;
 	}
 	
+	@Override
 	public void setDatabase(ArrayList database) {
-		this.database = (ArrayList<Streamer>)database;
+		this.database = database;
 	}
 	
 }

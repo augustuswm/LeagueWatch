@@ -31,7 +31,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#312709"
         android:textSize="16sp" />
-
+    
     <CheckBox
         android:id="@+id/favoriteStreamCheckBox"
         style="?android:attr/starStyle"
@@ -43,7 +43,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:selectAllOnFocus="false" />
-
+    
     <TextView
         android:id="@+id/viewers"
         android:layout_width="wrap_content"
@@ -56,8 +56,8 @@
         android:text="Viewers"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#666666"
-        android:textSize="12sp" />
-
+        android:textSize="12sp"/>
+    
     <TextView
         android:id="@+id/playing"
         android:layout_width="wrap_content"

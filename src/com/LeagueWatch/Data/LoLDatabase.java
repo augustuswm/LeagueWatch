@@ -8,8 +8,8 @@ import com.LeagueWatch.R;
 
 public class LoLDatabase {
 
-	private int[] championIcons = new int[268];
-	private String[] championNames = new String[268];
+	private int[] championIcons = new int[413];
+	private String[] championNames = new String[413];
 	private HashMap<String, String> services = new HashMap<String, String>();
 	private SparseArray itemIcons = new SparseArray();
 	
@@ -127,6 +127,7 @@ public class LoLDatabase {
 		championIcons[238] = R.drawable.zed;
 		championIcons[254] = R.drawable.vi;
 		championIcons[267] = R.drawable.nami;
+		championIcons[412] = R.drawable.thresh;
 		
 		championNames[0] = "unknown";
 		championNames[1] = "Annie";
@@ -238,6 +239,7 @@ public class LoLDatabase {
 		championNames[238] = "Zed";
 		championNames[254] = "Vi";
 		championNames[267] = "Nami";
+		championNames[412] = "Thresh";
 		
 		itemIcons.put(1001, R.drawable.boots_of_speed);
 		itemIcons.put(1004, R.drawable.faerie_charm);
@@ -387,6 +389,7 @@ public class LoLDatabase {
 		itemIcons.put(3187, R.drawable.hextech_sweeper);
 		itemIcons.put(3188, R.drawable.blackfire_torch);
 		itemIcons.put(3190, R.drawable.locket_of_the_iron_solari);
+		itemIcons.put(3191, R.drawable.seekers_armguard);
 		itemIcons.put(3196, R.drawable.augment_power);
 		itemIcons.put(3197, R.drawable.augment_gravity);
 		itemIcons.put(3198, R.drawable.augment_death);

@@ -5,13 +5,12 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.LeagueWatch.Data.FetchStream;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.preference.CheckBoxPreference;
 import android.util.Log;
+
+import com.LeagueWatch.Data.FetchStream;
 
 public class Favorites extends AsyncTask<Void, Void, Boolean> {
 	
@@ -40,10 +39,11 @@ public class Favorites extends AsyncTask<Void, Void, Boolean> {
 			if (entry.getKey().matches(".*?~streamer~.*")) {
 				String[] stringParts = entry.getKey().split("~");
 				if ((Boolean)entry.getValue()) {
+					Log.d("Stream", "Add: " + stringParts[0] + " : http://www.leaguewat.ch/gcm/" + regId + "/add/" + stringParts[0]);
 					f.setURL("http://www.leaguewat.ch/gcm/" + regId + "/add/" + stringParts[0]);
 					rawJSON = f.getJSON();
 				} else {
-					//Log.d("Stream", "http://www.leaguewat.ch/gcm/" + regId + "/remove/" + stringParts[0]);
+					Log.d("Stream", "Remove: " + stringParts[0]);
 					f.setURL("http://www.leaguewat.ch/gcm/" + regId + "/remove/" + stringParts[0]);
 					rawJSON = f.getJSON();
 					try {
